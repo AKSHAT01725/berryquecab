@@ -1235,19 +1235,13 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   }
 
   try {
-    const emailMessage =
-`Name: ${name}
-Pickup Location: ${pickup}
-Destination: ${dest}
-Pickup Date: ${toDMY(date)}${trip === 'Round Trip' ? `\nReturn Date: ${toDMY(returnDate)}` : ''}
-Pickup Time: ${to12Hour(time)}
-Trip Type: ${trip}${trip === 'Rental' ? `\nRental Package: ${rentalHours}` : ''}`;
-
     await emailjs.send('service_ydhh7oo', 'template_vvze5dp', {
-      mobile,
-      booking_type: trip + ' Booking',
-      message: emailMessage,
-      received: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+      name, mobile, pickup, destination: dest,
+      date: toDMY(date),
+      returnDate: trip === 'Round Trip' ? toDMY(returnDate) : '',
+      time: to12Hour(time),
+      trip,
+      rentalHours: trip === 'Rental' ? rentalHours : ''
     });
   } catch(err) {
     console.error('EmailJS error:', err);

@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dispatch Console — Berry Que Cab</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --navy:       #160f0a;
+  --ink:        #1e140e;
+  --ink-2:      #281b13;
+  --surface:    #211610;
+  --line:       rgba(255,255,255,0.08);
+  --line-2:     rgba(255,255,255,0.14);
+  --amber:      #c17f4e;
+  --amber-dim:  rgba(193,127,78,0.16);
+  --teal:       #e8c9a0;
+  --teal-dim:   rgba(232,201,160,0.14);
+  --red:        #ff5c5c;
+  --red-dim:    rgba(255,92,92,0.14);
+  --ice:        #f7f0e6;
+  --mute:       #ab9483;
+  --mute-2:     #7a6858;
+  --radius:     14px;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{
+  font-family:'Inter',Arial,sans-serif;
+  background: var(--navy);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(255,180,0,0.05), transparent 45%),
+    radial-gradient(circle at 100% 30%, rgba(61,220,151,0.04), transparent 50%);
+  color: var(--ice);
+  min-height:100vh;
+}
+.mono, .num{ font-family:'Space Grotesk',monospace; }
+
+/* ══════════════ LOGIN ══════════════ */
+
+
+#loginScreen{
+  position:fixed; inset:0;
+  background: var(--navy);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.025) 40px),
+    radial-gradient(circle at 50% 20%, rgba(255,180,0,0.08), transparent 55%);
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999;
+}
+
+.login-logo{
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:18px;
+}
+.login-logo img{
+  width:56px; height:56px;
+  border-radius:12px;
+  background:white;
+  padding:4px;
+  box-shadow:0 8px 24px rgba(255,180,0,0.15);
+}
+
+.brand-mark img{
+  width:34px; height:34px;
+  border-radius:8px;
+  background:white;
+  padding:2px;
+  flex-shrink:0;
+}
+
+.login-box{
+  width:400px; max-width:92vw;
+  background: var(--ink);
+  border:1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding:44px 38px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  position:relative;
+}
+.login-box::before{
+  content:'';
+  position:absolute; top:0; left:18%; right:18%; height:2px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+}
+.login-eyebrow{
+  font-family:'Space Grotesk';
+  font-size:11px;
+  letter-spacing:2.5px;
+  color:var(--amber);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.login-box h1{
+  font-family:'Space Grotesk';
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.login-box .sub{
+  color:var(--mute);
+  font-size:13.5px;
+  margin-bottom:32px;
+}
+.field{ margin-bottom:16px; }
+.field label{
+  display:block;
+  font-size:11.5px;
+  color:var(--mute);
+  margin-bottom:7px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.field input{
+  width:100%;
+  padding:13px 15px;
+  background: rgba(255,255,255,0.04);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--ice);
+  font-size:14.5px;
+  outline:none;
+  transition:.2s;
+  font-family:'Inter';
+}
+.field input:focus{
+  border-color:var(--amber);
+  background:rgba(255,180,0,0.05);
+}
+.login-btn{
+  width:100%;
+  padding:14px;
+  background:var(--amber);
+  color:#10171c;
+  border:none;
+  border-radius:9px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:8px;
+  transition:.2s;
+  font-family:'Space Grotesk';
+}
+.login-btn:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+.login-btn:disabled{ opacity:.55; cursor:default; transform:none; }
+#loginError{
+  color:var(--red);
+  font-size:13px;
+  margin-top:14px;
+  display:none;
+  padding:10px 13px;
+  background:var(--red-dim);
+  border-radius:8px;
+  border:1px solid rgba(255,92,92,0.25);
+}
+
+/* ══════════════ SHELL ══════════════ */
+#adminApp{ display:none; }
+
+/* ── DASHBOARD BRIEFING BANNER ── */
+.briefing{
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg, var(--ink-2) 0%, var(--navy) 100%);
+  border:1px solid var(--line-2);
+  border-radius:18px;
+  padding:30px 32px;
+  margin-bottom:22px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:24px; flex-wrap:wrap;
+}
+.briefing::before{
+  content:''; position:absolute; top:0; left:10%; right:10%; height:2px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+}
+.briefing::after{
+  content:''; position:absolute; right:-60px; top:-60px; width:220px; height:220px;
+  border-radius:50%; background:radial-gradient(circle, rgba(255,180,0,0.14), transparent 70%);
+  pointer-events:none;
+}
+.briefing-date{ font-family:'Space Grotesk'; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal); margin-bottom:8px; display:flex; align-items:center; gap:7px; position:relative; z-index:1; }
+.briefing-date .pip{ width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulse 1.4s infinite; }
+.briefing h2{ font-family:'Space Grotesk'; font-size:24px; font-weight:700; margin-bottom:6px; position:relative; z-index:1; }
+.briefing p{ color:var(--mute); font-size:13.5px; max-width:420px; position:relative; z-index:1; }
+.briefing-actions{ display:flex; gap:10px; flex-wrap:wrap; position:relative; z-index:1; }
+.briefing-btn{
+  display:flex; align-items:center; gap:8px;
+  padding:11px 18px; border-radius:10px; font-size:13px; font-weight:700;
+  cursor:pointer; transition:.2s; border:1px solid var(--line-2);
+  background:rgba(255,255,255,0.04); color:var(--ice); white-space:nowrap;
+}
+.briefing-btn:hover{ border-color:var(--amber); color:var(--amber); }
+.briefing-btn.primary{ background:var(--amber); color:#1a1200; border-color:var(--amber); }
+.briefing-btn.primary:hover{ filter:brightness(1.1); color:#1a1200; }
+@media(max-width:640px){ .briefing{ padding:24px 20px; } }
+
+/* ── STAT CARD ACCENT + FOOTER ── */
+.stat-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--accent, var(--amber));
+}
+.stat-foot{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+  font-size:11.5px; position:relative; z-index:1;
+}
+.stat-foot a{ color:var(--amber); text-decoration:none; font-weight:600; cursor:pointer; }
+.stat-foot a:hover{ text-decoration:underline; }
+.stat-foot .trend{ color:var(--mute-2); font-family:'Space Grotesk'; }
+.stat-foot .trend.up{ color:var(--teal); }
+
+.sidebar{
+  position:fixed; left:0; top:0; bottom:0;
+  width:240px;
+  background:var(--ink);
+  border-right:1px solid var(--line);
+  display:flex; flex-direction:column;
+  z-index:100;
+  transition:.3s;
+}
+.brand{
+  padding:26px 22px 22px;
+  border-bottom:1px solid var(--line);
+}
+.brand-mark{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:4px;
+}
+.brand-mark .dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--teal);
+  box-shadow:0 0 0 4px var(--teal-dim);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{ 50%{opacity:.4;} }
+.brand h2{
+  font-family:'Space Grotesk';
+  font-size:15.5px;
+  letter-spacing:.5px;
+}
+.brand span{
+  font-size:11.5px; color:var(--mute); display:block; margin-top:5px;
+}
+.nav-item{
+  display:flex; align-items:center; gap:13px;
+  padding:14px 22px;
+  color:var(--mute);
+  cursor:pointer;
+  transition:.18s;
+  font-size:13.5px;
+  font-weight:500;
+  border-left:3px solid transparent;
+}
+.nav-item:hover{ color:var(--ice); background:rgba(255,255,255,0.03); }
+.nav-item.active{
+  color:var(--amber);
+  border-left-color:var(--amber);
+  background:var(--amber-dim);
+}
+.nav-item i{ width:16px; text-align:center; font-size:13px; }
+.nav-count{
+  margin-left:auto;
+  background:rgba(255,255,255,0.08);
+  color:var(--mute);
+  font-size:11px;
+  padding:1px 7px;
+  border-radius:10px;
+  font-family:'Space Grotesk';
+}
+.nav-item.active .nav-count{ background:rgba(255,180,0,0.2); color:var(--amber); }
+.sidebar-bottom{
+  margin-top:auto;
+  padding:18px 22px;
+  border-top:1px solid var(--line);
+}
+.admin-id{
+  font-size:11.5px; color:var(--mute-2); margin-bottom:12px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.logout-btn{
+  display:flex; align-items:center; gap:9px;
+  color:var(--red);
+  cursor:pointer; font-size:13px; font-weight:600;
+}
+.logout-btn:hover{ opacity:.8; }
+
+.main{ margin-left:240px; padding:28px 32px 50px; min-height:100vh; }
+
+/* DISPATCH TICKER — signature element */
+.ticker{
+  display:flex; align-items:center; gap:14px;
+  background:linear-gradient(90deg, var(--ink-2), var(--ink));
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px 18px;
+  margin-bottom:24px;
+  font-size:12.5px;
+  overflow:hidden;
+  position:relative;
+}
+.ticker-label{
+  font-family:'Space Grotesk';
+  font-size:10.5px;
+  letter-spacing:1.5px;
+  color:var(--teal);
+  text-transform:uppercase;
+  flex-shrink:0;
+  display:flex; align-items:center; gap:7px;
+}
+.ticker-label .pip{
+  width:6px; height:6px; border-radius:50%; background:var(--teal);
+  animation:pulse 1.4s infinite;
+}
+.ticker-msg{
+  color:var(--mute); flex:1;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.ticker-msg b{ color:var(--ice); font-weight:600; }
+.ticker-time{ color:var(--mute-2); font-family:'Space Grotesk'; flex-shrink:0; }
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:26px;
+  flex-wrap:wrap; gap:14px;
+}
+.topbar h1{
+  font-family:'Space Grotesk';
+  font-size:23px; font-weight:700;
+}
+.topbar-right{ display:flex; align-items:center; gap:12px; }
+.refresh-btn{
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--line);
+  color:var(--mute);
+  padding:9px 14px;
+  border-radius:8px;
+  font-size:12.5px;
+  cursor:pointer;
+  display:flex; align-items:center; gap:7px;
+  transition:.2s;
+}
+.refresh-btn:hover{ color:var(--ice); border-color:var(--line-2); }
+.refresh-btn.spinning i{ animation:spin 0.8s linear infinite; }
+@keyframes spin{ 100%{ transform:rotate(360deg); } }
+
+.page{ display:none; }
+.page.active{ display:block; animation:fadeIn .25s ease; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+/* STAT CARDS */
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:16px;
+  margin-bottom:26px;
+}
+.stat-card{
+  background:var(--ink);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.stat-card::after{
+  content:''; position:absolute; right:-30px; top:-30px;
+  width:100px; height:100px; border-radius:50%;
+  background:var(--accent-glow, rgba(255,180,0,0.08));
+  filter:blur(10px);
+}
+.stat-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.stat-icon{
+  width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+}
+.stat-icon.amber{ background:var(--amber-dim); color:var(--amber); }
+.stat-icon.teal { background:var(--teal-dim); color:var(--teal); }
+.stat-icon.red  { background:var(--red-dim); color:var(--red); }
+.stat-icon.blue { background:rgba(120,160,255,0.14); color:#7fa3ff; }
+.stat-trend{ font-size:11px; color:var(--mute-2); font-family:'Space Grotesk'; }
+.stat-num{ font-family:'Space Grotesk'; font-size:30px; font-weight:700; line-height:1; }
+.stat-label{ font-size:12px; color:var(--mute); margin-top:6px; }
+
+/* TABLE CARD */
+.table-card{
+  background:var(--ink);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:22px;
+}
+.table-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap; gap:10px;
+}
+.table-header h3{
+  font-family:'Space Grotesk';
+  font-size:14.5px; font-weight:600;
+  display:flex; align-items:center; gap:9px;
+}
+.table-header h3 i{ color:var(--amber); }
+.table-actions{ display:flex; gap:9px; }
+.btn-sm{
+  padding:8px 14px;
+  border-radius:8px;
+  border:none;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+  display:flex; align-items:center; gap:6px;
+  font-family:'Inter';
+}
+.btn-amber{ background:var(--amber); color:#1a1200; }
+.btn-amber:hover{ filter:brightness(1.1); }
+.btn-outline{ background:transparent; border:1px solid var(--line-2); color:var(--ice); }
+.btn-outline:hover{ border-color:var(--amber); color:var(--amber); }
+.btn-danger-outline{ background:transparent; border:1px solid rgba(255,92,92,0.35); color:var(--red); }
+.btn-danger-outline:hover{ background:var(--red); color:white; border-color:var(--red); }
+
+.table-wrap{ overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; font-size:13px; }
+th{
+  background:rgba(255,255,255,0.02);
+  padding:11px 16px;
+  text-align:left;
+  color:var(--mute);
+  font-weight:600;
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  white-space:nowrap;
+  font-family:'Space Grotesk';
+}
+td{ padding:13px 16px; border-top:1px solid var(--line); vertical-align:top; }
+tr.data-row{ transition:.15s; }
+tr.data-row:hover td{ background:rgba(255,255,255,0.018); }
+.tag{
+  display:inline-block; padding:3px 10px; border-radius:20px;
+  font-size:10.5px; font-weight:700; letter-spacing:.3px;
+  font-family:'Space Grotesk';
+}
+.tag-teal { background:var(--teal-dim); color:var(--teal); }
+.tag-amber{ background:var(--amber-dim); color:var(--amber); }
+.tag-blue { background:rgba(120,160,255,0.14); color:#7fa3ff; }
+
+.del-btn{
+  background:transparent; border:1px solid rgba(255,92,92,0.3); color:var(--red);
+  padding:6px 10px; border-radius:7px; cursor:pointer; font-size:12px; transition:.2s;
+}
+.del-btn:hover{ background:var(--red); color:white; }
+.call-link{ color:var(--amber); text-decoration:none; font-family:'Space Grotesk'; }
+
+.empty-row td{ text-align:center; padding:46px; color:var(--mute); }
+.empty-icon{ font-size:32px; margin-bottom:10px; opacity:.6; }
+.loading-row td{ text-align:center; padding:46px; color:var(--mute); }
+
+/* SEARCH BAR */
+.search-bar{ display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.search-bar input{
+  flex:1; min-width:200px;
+  padding:11px 16px;
+  background:var(--ink);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--ice);
+  font-size:13.5px;
+  outline:none;
+  transition:.2s;
+  font-family:'Inter';
+}
+.search-bar input:focus{ border-color:var(--amber); }
+.search-bar select{
+  padding:11px 14px;
+  background:var(--ink);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--ice);
+  font-size:13.5px;
+  outline:none;
+  cursor:pointer;
+}
+
+/* SETTINGS */
+.settings-card{
+  background:var(--ink); border:1px solid var(--line);
+  border-radius:var(--radius); padding:26px; margin-bottom:18px;
+}
+.settings-card h3{
+  font-family:'Space Grotesk'; font-size:14.5px; margin-bottom:18px; color:var(--amber);
+  display:flex; align-items:center; gap:9px;
+}
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0; border-bottom:1px solid var(--line); gap:14px; flex-wrap:wrap;
+}
+.settings-row:last-child{ border:none; }
+.settings-row label{ font-size:13.5px; }
+.settings-row span{ font-size:11.5px; color:var(--mute); margin-top:3px; display:block; }
+.settings-val{ color:var(--mute); font-size:13px; font-family:'Space Grotesk'; }
+
+/* TOAST */
+.toast{
+  position:fixed; top:22px; right:22px;
+  background:var(--ink-2); border:1px solid var(--line-2);
+  border-left:3px solid var(--amber);
+  color:white; padding:14px 20px; border-radius:10px;
+  font-size:13.5px; z-index:99999;
+  opacity:0; transform:translateX(30px); transition:.3s;
+  pointer-events:none; max-width:320px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+.toast.show{ opacity:1; transform:translateX(0); }
+
+/* MOBILE */
+.hamburger-admin{ display:none; font-size:20px; cursor:pointer; color:var(--ice); }
+@media(max-width:768px){
+  .sidebar{ transform:translateX(-100%); }
+  .sidebar.open{ transform:translateX(0); box-shadow:20px 0 50px rgba(0,0,0,0.5); }
+  .main{ margin-left:0; padding:22px 16px 50px; }
+  .hamburger-admin{ display:block; }
+  .stats-row{ grid-template-columns:1fr 1fr; }
+  .ticker-msg{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="loginScreen">
+    <div class="login-box">
+  <div class="login-logo">
+    <img src="logo.jpeg" alt="Berry Que Cab Logo">
+  </div>
+    <div class="login-eyebrow">Restricted Access</div>
+    <h1>Dispatch Console</h1>
+    <p class="sub">Berry Que Cab — Admin Sign In</p>
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@berryquecab.com" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+      <i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Sign In
+    </button>
+    <div id="loginError"></div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="adminApp">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <img src="logo.jpeg" alt="Berry Que Cab Logo">
+        <div class="dot"></div>
+        <h2>DISPATCH CONSOLE</h2>
+      </div>
+      <span>Berry Que Cab</span>
+    </div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)">
+      <i class="fas fa-gauge-high"></i> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('bookings',this)">
+      <i class="fas fa-calendar-check"></i> Bookings <span class="nav-count" id="navCountBookings">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('routes',this)">
+      <i class="fas fa-route"></i> Route Inquiries <span class="nav-count" id="navCountRoutes">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('roundtrip',this)">
+      <i class="fas fa-rotate"></i> Round Trips <span class="nav-count" id="navCountRound">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('routepricing',this)">
+  <i class="fas fa-map-signs"></i> Routes &amp; Pricing <span class="nav-count" id="navCountRoutePricing">0</span>
+</div>
+<div class="nav-item" onclick="showPage('roundtrippricing',this)">
+  <i class="fas fa-tags"></i> Round Trip Pricing <span class="nav-count" id="navCountRoundTripPricing">0</span>
+</div>
+<div class="nav-item" onclick="showPage('settings',this)">
+      <i class="fas fa-gear"></i> Settings
+    </div>
+    <div class="sidebar-bottom">
+      <div class="admin-id" id="adminEmailLabel">—</div>
+      <div class="logout-btn" onclick="doLogout()">
+        <i class="fas fa-power-off"></i> Sign Out
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="hamburger-admin" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="refresh-btn" id="refreshBtn" onclick="refreshAll(true)">
+          <i class="fas fa-rotate"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="ticker" id="tickerBar">
+      <div class="ticker-label"><span class="pip"></span> Live Feed</div>
+      <div class="ticker-msg" id="tickerMsg">Connecting to dispatch database…</div>
+      <div class="ticker-time" id="tickerTime"></div>
+    </div>
+
+    <div class="page active" id="page-dashboard">
+
+  <div class="briefing">
+    <div>
+      <div class="briefing-date"><span class="pip"></span><span id="briefingDate">—</span></div>
+      <h2 id="briefingGreeting">Welcome back</h2>
+      <p>Here's what's moving across bookings, routes and round trips right now.</p>
+    </div>
+    <div class="briefing-actions">
+      <button class="briefing-btn" onclick="refreshAll(true)"><i class="fas fa-rotate"></i> Refresh</button>
+      <button class="briefing-btn" onclick="goToPage('bookings')"><i class="fas fa-calendar-check"></i> View Bookings</button>
+      <button class="briefing-btn primary" onclick="goToPage('routepricing'); openRouteModal();"><i class="fas fa-plus"></i> Add Route</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card" style="--accent-glow:rgba(255,180,0,0.1);--accent:var(--amber)">
+      <div class="stat-top"><div class="stat-icon amber"><i class="fas fa-calendar-check"></i></div></div>
+      <div class="stat-num num" id="stat-total">—</div>
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-foot"><a onclick="goToPage('bookings')">View all →</a><span class="trend" id="stat-total-trend">—</span></div>
+    </div>
+    <div class="stat-card" style="--accent-glow:rgba(61,220,151,0.1);--accent:var(--teal)">
+      <div class="stat-top"><div class="stat-icon teal"><i class="fas fa-route"></i></div></div>
+      <div class="stat-num num" id="stat-routes">—</div>
+      <div class="stat-label">Route Inquiries</div>
+      <div class="stat-foot"><a onclick="goToPage('routes')">View all →</a><span class="trend" id="stat-routes-trend">—</span></div>
+    </div>
+    <div class="stat-card" style="--accent-glow:rgba(120,160,255,0.1);--accent:#7fa3ff">
+      <div class="stat-top"><div class="stat-icon blue"><i class="fas fa-rotate"></i></div></div>
+      <div class="stat-num num" id="stat-round">—</div>
+      <div class="stat-label">Round Trip Requests</div>
+      <div class="stat-foot"><a onclick="goToPage('roundtrip')">View all →</a><span class="trend" id="stat-round-trend">—</span></div>
+    </div>
+    <div class="stat-card" style="--accent-glow:rgba(255,92,92,0.1);--accent:var(--red)">
+      <div class="stat-top"><div class="stat-icon red"><i class="fas fa-list-check"></i></div></div>
+      <div class="stat-num num" id="stat-all">—</div>
+      <div class="stat-label">All Inquiries</div>
+      <div class="stat-foot"><a onclick="goToPage('routepricing')">Manage routes →</a><span class="trend" id="stat-all-trend">—</span></div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card" style="--accent-glow:rgba(255,180,0,0.1);--accent:var(--amber)">
+      <div class="stat-top"><div class="stat-icon amber"><i class="fas fa-star"></i></div></div>
+      <div class="stat-num num">4.9★</div>
+      <div class="stat-label">Google Rating</div>
+      <div class="stat-foot"><a href="https://g.page/r/CTQaIJuvHQ3REBE/review" target="_blank">Google reviews →</a><span class="trend up">100+ reviews</span></div>
+    </div>
+    <div class="stat-card" style="--accent-glow:rgba(61,220,151,0.1);--accent:var(--teal)">
+      <div class="stat-top"><div class="stat-icon teal"><i class="fas fa-calendar-days"></i></div></div>
+      <div class="stat-num num" id="stat-month">—</div>
+      <div class="stat-label">Bookings This Month</div>
+      <div class="stat-foot"><a onclick="goToPage('bookings')">View all →</a><span class="trend" id="stat-month-trend">—</span></div>
+    </div>
+    <div class="stat-card" style="--accent-glow:rgba(120,160,255,0.1);--accent:#7fa3ff">
+      <div class="stat-top"><div class="stat-icon blue"><i class="fas fa-map-location-dot"></i></div></div>
+      <div class="stat-num" id="stat-toproute" style="font-family:'Space Grotesk';font-size:18px;font-weight:700;line-height:1.3;">—</div>
+      <div class="stat-label">Most Requested Route</div>
+      <div class="stat-foot"><a onclick="goToPage('routes')">View inquiries →</a><span class="trend" id="stat-toproute-count">—</span></div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3><i class="fas fa-clock"></i>Recent Bookings</h3>
+      <button class="btn-sm btn-outline" onclick="goToPage('bookings')">View All</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Mobile</th><th>Pickup</th><th>Destination</th><th>Date</th><th>Type</th></tr></thead>
+        <tbody id="recentBookingsBody"><tr class="loading-row"><td colspan="6">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+    <!-- BOOKINGS -->
+    <div class="page" id="page-bookings">
+      <div class="search-bar">
+        <input type="text" id="bookSearch" placeholder="Search by name, mobile, pickup…" oninput="renderBookings()">
+        <select id="bookFilter" onchange="renderBookings()">
+          <option value="">All Trip Types</option>
+          <option>One Way</option>
+          <option>Round Trip</option>
+          <option>Rental</option>
+        </select>
+        <button class="btn-sm btn-danger-outline" onclick="clearAll('bookings')"><i class="fas fa-trash"></i> Clear All</button>
+        <button class="btn-sm btn-amber" onclick="exportCSV('bookings')"><i class="fas fa-download"></i> Export</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3><i class="fas fa-calendar-check"></i>Form Bookings</h3>
+          <span class="settings-val" id="bookCount"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+           <thead><tr><th>Name</th><th>Mobile</th><th>Pickup</th><th>Destination</th><th>Date &amp; Time</th><th>Trip</th><th>Received</th><th>Action</th></tr></thead>
+            <tbody id="bookingsBody"><tr class="loading-row"><td colspan="8">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUTES -->
+    <div class="page" id="page-routes">
+      <div class="search-bar">
+        <input type="text" id="routeSearch" placeholder="Search route or mobile…" oninput="renderRoutes()">
+        <button class="btn-sm btn-danger-outline" onclick="clearAll('routes')"><i class="fas fa-trash"></i> Clear All</button>
+        <button class="btn-sm btn-amber" onclick="exportCSV('routes')"><i class="fas fa-download"></i> Export</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3><i class="fas fa-route"></i>Route Inquiries</h3>
+          <span class="settings-val" id="routeCount"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Route</th><th>Mobile</th><th>Sedan Price</th><th>SUV Price</th><th>Received</th><th>Action</th></tr></thead>
+            <tbody id="routesBody"><tr class="loading-row"><td colspan="6">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUND TRIPS -->
+    <div class="page" id="page-roundtrip">
+      <div class="search-bar">
+        <input type="text" id="roundSearch" placeholder="Search vehicle or mobile…" oninput="renderRound()">
+        <button class="btn-sm btn-danger-outline" onclick="clearAll('roundtrip')"><i class="fas fa-trash"></i> Clear All</button>
+        <button class="btn-sm btn-amber" onclick="exportCSV('roundtrip')"><i class="fas fa-download"></i> Export</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3><i class="fas fa-rotate"></i>Round Trip Requests</h3>
+          <span class="settings-val" id="roundCount"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Vehicle</th><th>Rate/KM</th><th>Mobile</th><th>Received</th><th>Action</th></tr></thead>
+            <tbody id="roundBody"><tr class="loading-row"><td colspan="5">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUTES & PRICING -->
+    <div class="page" id="page-routepricing">
+      <div class="search-bar">
+        <input type="text" id="rpSearch" placeholder="Search route name…" oninput="renderRoutePricing()">
+        <button class="btn-sm btn-amber" onclick="openRouteModal()"><i class="fas fa-plus"></i> Add Route</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+  <h3><i class="fas fa-map-signs"></i>Routes &amp; Pricing</h3>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="btn-sm btn-outline" id="revertBtnRoutes" style="display:none;" onclick="revertBulkAdjust('routes')"><i class="fas fa-rotate-left"></i> Revert Last Change</button>
+    <button class="btn-sm btn-outline" onclick="openBulkAdjustModal('routes')"><i class="fas fa-percent"></i> Bulk Adjust</button>
+    <span class="settings-val" id="rpCount"></span>
+  </div>
+</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Route</th><th>Sedan Price</th><th>SUV Price</th><th>Image</th><th>Action</th></tr></thead>
+            <tbody id="rpBody"><tr class="loading-row"><td colspan="5">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUND TRIP PRICING -->
+<div class="page" id="page-roundtrippricing">
+  <div class="search-bar">
+    <input type="text" id="rtpSearch" placeholder="Search vehicle name…" oninput="renderRoundTripPricing()">
+    <button class="btn-sm btn-amber" onclick="openRtRateModal()"><i class="fas fa-plus"></i> Add Vehicle</button>
+  </div>
+  <div class="table-card">
+    <div class="table-header">
+  <h3><i class="fas fa-tags"></i>Round Trip Pricing</h3>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="btn-sm btn-outline" id="revertBtnRoundtrip" style="display:none;" onclick="revertBulkAdjust('roundtrip')"><i class="fas fa-rotate-left"></i> Revert Last Change</button>
+    <button class="btn-sm btn-outline" onclick="openBulkAdjustModal('roundtrip')"><i class="fas fa-percent"></i> Bulk Adjust</button>
+    <span class="settings-val" id="rtpCount"></span>
+  </div>
+</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vehicle</th><th>Rate/KM</th><th>Persons</th><th>Bags</th><th>Badge</th><th>Theme</th><th>Action</th></tr></thead>
+        <tbody id="rtpBody"><tr class="loading-row"><td colspan="7">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+    <!-- SETTINGS -->
+     
+    <div class="page" id="page-settings">
+      <div class="settings-card">
+        <h3><i class="fas fa-circle-info"></i>Account</h3>
+        <div class="settings-row">
+          <div><label>Signed in as</label></div>
+          <div class="settings-val" id="settingsEmail">—</div>
+        </div>
+        <div class="settings-row">
+          <div><label>Authentication</label><span>Managed by Firebase Authentication</span></div>
+          <div class="settings-val">Email / Password</div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3><i class="fas fa-building"></i>Business Info</h3>
+        <div class="settings-row"><div><label>Phone Number</label></div><div class="settings-val">+91 95744 56015</div></div>
+        <div class="settings-row"><div><label>Email</label></div><div class="settings-val">berryquecab.travel@gmail.com</div></div>
+        <div class="settings-row"><div><label>Database</label></div><div class="settings-val">Firebase Firestore</div></div>
+      </div>
+      <div class="settings-card">
+        <h3><i class="fas fa-database"></i>Data Management</h3>
+        <div class="settings-row">
+          <div><label>Clear All Records</label><span>Permanently delete every booking, route inquiry, and round trip request</span></div>
+          <button class="btn-sm btn-danger-outline" onclick="clearAll('all')"><i class="fas fa-trash-can"></i> Clear All Data</button>
+        </div>
+        <div class="settings-row">
+          <div><label>Export All Data</label><span>Download every record as a single CSV file</span></div>
+          <button class="btn-sm btn-amber" onclick="exportCSV('all')"><i class="fas fa-file-csv"></i> Export All</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ROUTE ADD/EDIT MODAL -->
+<div id="routeModal" style="position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(4,10,24,0.75);backdrop-filter:blur(10px);padding:20px;">
+  <div style="background:var(--ink);border:1px solid var(--line-2);border-radius:16px;padding:32px;max-width:420px;width:100%;position:relative;">
+    <h3 style="font-family:'Space Grotesk';font-size:18px;margin-bottom:20px;color:var(--amber);" id="routeModalTitle">Add Route</h3>
+    <div class="field">
+      <label>Route Name</label>
+      <input type="text" id="rmName" placeholder="Ahmedabad → Vadodara">
+    </div>
+    <div class="field">
+      <label>Sedan Price (₹)</label>
+      <input type="number" id="rmSedan" placeholder="1799">
+    </div>
+    <div class="field">
+      <label>SUV Price (₹)</label>
+      <input type="number" id="rmSuv" placeholder="2699">
+    </div>
+    <div class="field">
+      <label>Image Filename</label>
+      <input type="text" id="rmImage" placeholder="AV.png">
+    </div>
+    <button class="login-btn" onclick="saveRoutePricing()" style="margin-bottom:12px;">
+      <i class="fas fa-check"></i> &nbsp;Save Route
+    </button>
+    <button style="width:100%;background:none;border:none;color:var(--mute);font-size:13px;cursor:pointer;padding:6px;" onclick="closeRouteModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ROUND TRIP RATE ADD/EDIT MODAL -->
+<div id="rtRateModal" style="position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(4,10,24,0.75);backdrop-filter:blur(10px);padding:20px;">
+  <div style="background:var(--ink);border:1px solid var(--line-2);border-radius:16px;padding:32px;max-width:440px;width:100%;position:relative;max-height:90vh;overflow-y:auto;">
+    <h3 style="font-family:'Space Grotesk';font-size:18px;margin-bottom:20px;color:var(--amber);" id="rtRateModalTitle">Add Vehicle</h3>
+    <div class="field">
+      <label>Vehicle Name</label>
+      <input type="text" id="rtrName" placeholder="Swift Dzire">
+    </div>
+    <div class="field">
+      <label>Rate per KM (₹)</label>
+      <input type="number" id="rtrRate" placeholder="11">
+    </div>
+    <div class="field">
+      <label>Persons Capacity</label>
+      <input type="number" id="rtrPersons" placeholder="4">
+    </div>
+    <div class="field">
+      <label>Bags Capacity</label>
+      <input type="number" id="rtrBags" placeholder="3">
+    </div>
+    <div class="field">
+      <label>Image Filename</label>
+      <input type="text" id="rtrImage" placeholder="Swift Dzire.webp">
+    </div>
+    <div class="field">
+      <label>Badge Text (optional)</label>
+      <input type="text" id="rtrBadge" placeholder="Most Popular">
+    </div>
+    <div class="field">
+      <label>Accent Color</label>
+      <select id="rtrTheme" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+        <option value="ertiga">Gold (default)</option>
+        <option value="sedan">Blue</option>
+        <option value="crysta">Teal</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Features (comma-separated)</label>
+      <input type="text" id="rtrFeatures" placeholder="AC Comfort, 24×7 Available">
+    </div>
+    <button class="login-btn" onclick="saveRtRate()" style="margin-bottom:12px;">
+      <i class="fas fa-check"></i> &nbsp;Save Vehicle
+    </button>
+    <button style="width:100%;background:none;border:none;color:var(--mute);font-size:13px;cursor:pointer;padding:6px;" onclick="closeRtRateModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- BULK RATE ADJUST MODAL -->
+<div id="bulkAdjustModal" style="position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(4,10,24,0.75);backdrop-filter:blur(10px);padding:20px;">
+  <div style="background:var(--ink);border:1px solid var(--line-2);border-radius:16px;padding:32px;max-width:440px;width:100%;position:relative;">
+    <h3 style="font-family:'Space Grotesk';font-size:18px;margin-bottom:6px;color:var(--amber);" id="bulkAdjustTitle">Bulk Adjust Rates</h3>
+    <p style="font-size:12.5px;color:var(--mute);margin-bottom:22px;" id="bulkAdjustSub">This will update all records currently in the table.</p>
+
+    <div class="field">
+      <label>Direction</label>
+      <select id="baDirection" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+        <option value="increase">Increase</option>
+        <option value="decrease">Decrease</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Method</label>
+      <select id="baMethod" onchange="updateBaValueLabel()" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+        <option value="percent">Percentage (%)</option>
+        <option value="fixed">Fixed Amount (₹)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label id="baValueLabel">Value (%)</label>
+      <input type="number" id="baValue" placeholder="e.g. 10" min="0" step="any">
+    </div>
+
+    <div class="field" id="baFieldsWrap">
+      <label>Apply To</label>
+      <div style="display:flex;gap:16px;margin-top:6px;">
+        <label style="display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ice);">
+          <input type="checkbox" id="baApplySedan" checked style="width:auto;"> Sedan
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ice);">
+          <input type="checkbox" id="baApplySuv" checked style="width:auto;"> SUV
+        </label>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.25);border-radius:9px;padding:12px 14px;font-size:12.5px;color:var(--mute);margin-bottom:18px;">
+      <i class="fas fa-triangle-exclamation" style="color:var(--amber);margin-right:6px;"></i>
+      Prices are rounded to the nearest whole rupee. This directly updates Firestore and cannot be undone automatically.
+    </div>
+
+    <button class="login-btn" onclick="applyBulkAdjust()" style="margin-bottom:12px;">
+      <i class="fas fa-check"></i> &nbsp;Apply to All
+    </button>
+    <button style="width:100%;background:none;border:none;color:var(--mute);font-size:13px;cursor:pointer;padding:6px;" onclick="closeBulkAdjustModal()">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import {
+  auth, loginAdmin, logoutAdmin, watchAuthState,
+  fetchCollection, deleteDocument, saveDocument, updateDocument
+} from './firebase-config.js';
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let bookingsCache = [];
+let routesCache   = [];
+let roundCache    = [];
+let routePricingCache = [];
+let roundTripRatesCache = [];
+let isFetching    = false;
+
+// ─────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────
+window.doLogin = async function(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('loginError');
+  err.style.display = 'none';
+
+  if(!email || !pass){
+    err.textContent = 'Please enter both email and password.';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Signing in…';
+
+  try{
+    await loginAdmin(email, pass);
+    // onAuthStateChanged will handle showing the app
+  }catch(e){
+    let msg = 'Login failed. Check your email and password.';
+    if(e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found'){
+      msg = 'Invalid email or password.';
+    } else if(e.code === 'auth/too-many-requests'){
+      msg = 'Too many attempts. Please wait and try again.';
+    } else if(e.code === 'auth/invalid-email'){
+      msg = 'Please enter a valid email address.';
+    }
+    err.textContent = msg;
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Sign In';
+  }
+};
+
+window.doLogout = async function(){
+  await logoutAdmin();
+};
+
+watchAuthState(user => {
+  if(user){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    document.getElementById('adminEmailLabel').textContent = user.email;
+    document.getElementById('settingsEmail').textContent = user.email;
+    refreshAll(false);
+    updateRevertButtons();
+  } else {
+    document.getElementById('adminApp').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+});
+
+document.getElementById('loginPass').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') window.doLogin();
+});
+
+// Sidebar nav order: 1=brand, 2=dashboard, 3=bookings, 4=routes, 5=roundtrip, 6=routepricing, 7=settings
+window.goToPage = function(name){
+  const idx = { dashboard:2, bookings:3, routes:4, roundtrip:5, routepricing:6, roundtrippricing:7, settings:8 };
+  const el = document.querySelector(`.nav-item:nth-child(${idx[name]})`);
+  if(el) el.click();
+};
+
+function updateInsights(){
+  const now = new Date();
+  const hour = now.getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const emailPrefix = (auth.currentUser && auth.currentUser.email) ? auth.currentUser.email.split('@')[0] : 'Admin';
+  document.getElementById('briefingGreeting').textContent = `${greet}, ${emailPrefix}`;
+  document.getElementById('briefingDate').textContent = now.toLocaleDateString('en-IN',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+
+  const toDate = ts => { try { return ts.toDate ? ts.toDate() : new Date(ts); } catch(e){ return null; } };
+  const weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const countSince = (arr, since) => arr.filter(x => { const d = toDate(x.received); return d && d >= since; }).length;
+
+  const bookingsWeek = countSince(bookingsCache, weekAgo);
+  const routesWeek   = countSince(routesCache, weekAgo);
+  const roundWeek    = countSince(roundCache, weekAgo);
+  const monthCount   = countSince(bookingsCache, monthStart);
+
+  const setTrend = (id, n) => {
+    const el = document.getElementById(id);
+    el.textContent = n ? `+${n} this week` : 'No change this week';
+    el.classList.toggle('up', n > 0);
+  };
+  setTrend('stat-total-trend', bookingsWeek);
+  setTrend('stat-routes-trend', routesWeek);
+  setTrend('stat-round-trend', roundWeek);
+  document.getElementById('stat-all-trend').textContent = routePricingCache.length + ' active routes';
+
+  document.getElementById('stat-month').textContent = monthCount;
+  document.getElementById('stat-month-trend').textContent = now.toLocaleDateString('en-IN',{month:'long'});
+
+  const tally = {};
+  routesCache.forEach(r => { if(r.route) tally[r.route] = (tally[r.route]||0) + 1; });
+  const sorted = Object.entries(tally).sort((a,b)=>b[1]-a[1]);
+  if(sorted.length){
+    document.getElementById('stat-toproute').textContent = sorted[0][0];
+    document.getElementById('stat-toproute-count').textContent = `${sorted[0][1]} inquiries`;
+  } else {
+    document.getElementById('stat-toproute').textContent = 'No data yet';
+    document.getElementById('stat-toproute-count').textContent = '—';
+  }
+}
+
+// ─────────────────────────────────────────
+// DATA FETCH
+// ─────────────────────────────────────────
+window.refreshAll = async function(showSpinner){
+  if(isFetching) return;
+  isFetching = true;
+  const btn = document.getElementById('refreshBtn');
+  if(showSpinner) btn.classList.add('spinning');
+
+  try{
+    const [bookings, routes, round, routePricing, roundTripRates] = await Promise.all([
+  fetchCollection('bookings'),
+  fetchCollection('routeInquiries'),
+  fetchCollection('roundTripRequests'),
+  fetchCollection('routes', 'order', 'asc'),
+  fetchCollection('roundTripRates', 'order', 'asc')
+]);
+bookingsCache = bookings;
+routesCache   = routes;
+roundCache    = round;
+routePricingCache = routePricing;
+roundTripRatesCache = roundTripRates;
+
+updateStats();
+updateTicker();
+updateInsights(); 
+renderRecent();
+renderBookings();
+renderRoutes();
+renderRound();
+renderRoutePricing();
+renderRoundTripPricing();
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Could not load data: ' + (e.message||'check Firestore rules'));
+  } finally {
+    isFetching = false;
+    btn.classList.remove('spinning');
+  }
+};
+
+// ─────────────────────────────────────────
+// DELETE
+// ─────────────────────────────────────────
+window.deleteBooking = async function(id){
+  if(!confirm('Delete this booking?')) return;
+  await deleteDocument('bookings', id);
+  showToast('Booking deleted');
+  refreshAll(false);
+};
+window.deleteRoute = async function(id){
+  if(!confirm('Delete this route inquiry?')) return;
+  await deleteDocument('routeInquiries', id);
+  showToast('Route inquiry deleted');
+  refreshAll(false);
+};
+window.deleteRound = async function(id){
+  if(!confirm('Delete this round trip request?')) return;
+  await deleteDocument('roundTripRequests', id);
+  showToast('Round trip request deleted');
+  refreshAll(false);
+};
+
+window.clearAll = async function(type){
+  if(!confirm('This will permanently delete the selected records. Continue?')) return;
+  const jobs = [];
+  if(type==='bookings'||type==='all')   jobs.push(...bookingsCache.map(b=>deleteDocument('bookings', b.id)));
+  if(type==='routes'  ||type==='all')   jobs.push(...routesCache.map(r=>deleteDocument('routeInquiries', r.id)));
+  if(type==='roundtrip'||type==='all')  jobs.push(...roundCache.map(r=>deleteDocument('roundTripRequests', r.id)));
+  await Promise.all(jobs);
+  showToast('Records cleared');
+  refreshAll(false);
+};
+
+// ─────────────────────────────────────────
+// STATS / TICKER
+// ─────────────────────────────────────────
+function updateStats(){
+  document.getElementById('stat-total').textContent  = bookingsCache.length;
+  document.getElementById('stat-routes').textContent = routesCache.length;
+  document.getElementById('stat-round').textContent  = roundCache.length;
+  document.getElementById('stat-all').textContent    = bookingsCache.length + routesCache.length + roundCache.length;
+  document.getElementById('navCountBookings').textContent = bookingsCache.length;
+  document.getElementById('navCountRoutes').textContent   = routesCache.length;
+  document.getElementById('navCountRound').textContent    = roundCache.length;
+  document.getElementById('navCountRoutePricing').textContent = routePricingCache.length;
+document.getElementById('navCountRoundTripPricing').textContent = roundTripRatesCache.length;
+}
+
+function updateTicker(){
+  const latest = bookingsCache[0];
+  const msgEl  = document.getElementById('tickerMsg');
+  const timeEl = document.getElementById('tickerTime');
+  if(latest){
+    msgEl.innerHTML = `Latest: <b>${esc(latest.name||'Unknown')}</b> — ${esc(latest.pickup||'?')} → ${esc(latest.destination||'?')} (${esc(latest.trip||'—')})`;
+    timeEl.textContent = fmtDate(latest.received);
+  } else {
+    msgEl.textContent = 'No bookings yet — waiting for the first request.';
+    timeEl.textContent = '';
+  }
+}
+
+// ─────────────────────────────────────────
+// RENDER: DASHBOARD RECENT
+// ─────────────────────────────────────────
+function renderRecent(){
+  const tbody = document.getElementById('recentBookingsBody');
+  const data  = bookingsCache.slice(0,5);
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6"><div class="empty-icon">📭</div>No bookings yet</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(b => `
+    <tr class="data-row">
+      <td>${esc(b.name||'—')}</td>
+      <td><a class="call-link" href="tel:${esc(b.mobile)}">${esc(b.mobile)}</a></td>
+      <td>${esc(b.pickup)}</td>
+      <td>${esc(b.destination)}</td>
+      <td>${esc(b.date)} ${esc(b.time||'')}</td>
+      <td><span class="tag ${tripTag(b.trip)}">${esc(b.trip)}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ─────────────────────────────────────────
+// RENDER: BOOKINGS
+// ─────────────────────────────────────────
+window.renderBookings = function(){
+  const q = (document.getElementById('bookSearch').value||'').toLowerCase();
+  const f = document.getElementById('bookFilter').value;
+  let data = bookingsCache;
+  if(q) data = data.filter(b => ((b.name||'')+(b.mobile||'')+(b.pickup||'')+(b.destination||'')).toLowerCase().includes(q));
+  if(f) data = data.filter(b => b.trip === f);
+
+  document.getElementById('bookCount').textContent = data.length + ' record(s)';
+  const tbody = document.getElementById('bookingsBody');
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="8"><div class="empty-icon">📭</div>No bookings found</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(b => `
+    <tr class="data-row">
+      <td>${esc(b.name||'—')}</td>
+      <td><a class="call-link" href="tel:${esc(b.mobile)}">${esc(b.mobile)}</a></td>
+      <td>${esc(b.pickup)}</td>
+      <td>${esc(b.destination)}</td>
+      <td style="white-space:nowrap">${esc(b.date)}<br><small style="color:var(--mute)">${esc(b.time||'')}</small></td>
+      <td><span class="tag ${tripTag(b.trip)}">${esc(b.trip)}</span></td>
+      <td style="white-space:nowrap;color:var(--mute);font-size:12px">${fmtDate(b.received)}</td>
+      <td><button class="del-btn" onclick="deleteBooking('${b.id}')"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `).join('');
+};
+
+// ─────────────────────────────────────────
+// RENDER: ROUTES
+// ─────────────────────────────────────────
+window.renderRoutes = function(){
+  const q = (document.getElementById('routeSearch').value||'').toLowerCase();
+  let data = routesCache;
+  if(q) data = data.filter(r => ((r.route||'')+(r.mobile||'')).toLowerCase().includes(q));
+  document.getElementById('routeCount').textContent = data.length + ' record(s)';
+  const tbody = document.getElementById('routesBody');
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6"><div class="empty-icon">🗺️</div>No route inquiries yet</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(r => `
+    <tr class="data-row">
+      <td><strong>${esc(r.route)}</strong></td>
+      <td><a class="call-link" href="tel:${esc(r.mobile)}">${esc(r.mobile)}</a></td>
+      <td>₹${esc(r.sedan)}</td>
+      <td>₹${esc(r.suv)}</td>
+      <td style="color:var(--mute);font-size:12px">${fmtDate(r.received)}</td>
+      <td><button class="del-btn" onclick="deleteRoute('${r.id}')"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `).join('');
+};
+
+// ─────────────────────────────────────────
+// RENDER: ROUND TRIPS
+// ─────────────────────────────────────────
+window.renderRound = function(){
+  const q = (document.getElementById('roundSearch').value||'').toLowerCase();
+  let data = roundCache;
+  if(q) data = data.filter(r => ((r.car||'')+(r.mobile||'')).toLowerCase().includes(q));
+  document.getElementById('roundCount').textContent = data.length + ' record(s)';
+  const tbody = document.getElementById('roundBody');
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="5"><div class="empty-icon">🔄</div>No round trip requests yet</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(r => `
+    <tr class="data-row">
+      <td><strong>${esc(r.car)}</strong></td>
+      <td>₹${esc(r.rate)}/KM</td>
+      <td><a class="call-link" href="tel:${esc(r.mobile)}">${esc(r.mobile)}</a></td>
+      <td style="color:var(--mute);font-size:12px">${fmtDate(r.received)}</td>
+      <td><button class="del-btn" onclick="deleteRound('${r.id}')"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `).join('');
+};
+
+// ─────────────────────────────────────────
+// RENDER: ROUTES & PRICING
+// ─────────────────────────────────────────
+window.renderRoutePricing = function(){
+  const q = (document.getElementById('rpSearch').value||'').toLowerCase();
+  let data = routePricingCache;
+  if(q) data = data.filter(r => (r.name||'').toLowerCase().includes(q));
+  document.getElementById('rpCount').textContent = data.length + ' route(s)';
+  const tbody = document.getElementById('rpBody');
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="5"><div class="empty-icon">🗺️</div>No routes added yet</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(r => `
+    <tr class="data-row">
+      <td><strong>${esc(r.name)}</strong></td>
+      <td>₹${esc(r.sedan)}</td>
+      <td>₹${esc(r.suv)}</td>
+      <td style="color:var(--mute);font-size:12px">${esc(r.image)}</td>
+      <td>
+        <button class="del-btn" style="border-color:rgba(255,180,0,0.3);color:var(--amber);margin-right:6px;" onclick="openRouteModal('${r.id}')"><i class="fas fa-pen"></i></button>
+        <button class="del-btn" onclick="deleteRoutePricing('${r.id}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+
+window.openRouteModal = function(id){
+  const modal = document.getElementById('routeModal');
+  const title = document.getElementById('routeModalTitle');
+  window._editingRouteId = id || null;
+  if(id){
+    const r = routePricingCache.find(x => x.id === id);
+    title.textContent = 'Edit Route';
+    document.getElementById('rmName').value  = r ? r.name  : '';
+    document.getElementById('rmSedan').value = r ? r.sedan : '';
+    document.getElementById('rmSuv').value   = r ? r.suv   : '';
+    document.getElementById('rmImage').value = r ? r.image : '';
+  } else {
+    title.textContent = 'Add Route';
+    document.getElementById('rmName').value  = '';
+    document.getElementById('rmSedan').value = '';
+    document.getElementById('rmSuv').value   = '';
+    document.getElementById('rmImage').value = '';
+  }
+  modal.style.display = 'flex';
+};
+
+window.closeRouteModal = function(){
+  document.getElementById('routeModal').style.display = 'none';
+};
+
+window.saveRoutePricing = async function(){
+  const name  = document.getElementById('rmName').value.trim();
+  const sedan = document.getElementById('rmSedan').value.trim();
+  const suv   = document.getElementById('rmSuv').value.trim();
+  const image = document.getElementById('rmImage').value.trim();
+
+  if(!name || !sedan || !suv){
+    showToast('Please fill in route name, sedan price and SUV price');
+    return;
+  }
+
+  try{
+    if(window._editingRouteId){
+      await updateDocument('routes', window._editingRouteId, { name, sedan, suv, image });
+      showToast('Route updated');
+    } else {
+      await saveDocument('routes', { name, sedan, suv, image, order: Date.now() });
+      showToast('Route added');
+    }
+    closeRouteModal();
+    refreshAll(false);
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Could not save route: ' + (e.message||'check Firestore rules'));
+  }
+};
+
+window.deleteRoutePricing = async function(id){
+  if(!confirm('Delete this route?')) return;
+  await deleteDocument('routes', id);
+  showToast('Route deleted');
+  refreshAll(false);
+};
+
+// ─────────────────────────────────────────
+// RENDER: ROUND TRIP PRICING
+// ─────────────────────────────────────────
+window.renderRoundTripPricing = function(){
+  const q = (document.getElementById('rtpSearch').value||'').toLowerCase();
+  let data = roundTripRatesCache;
+  if(q) data = data.filter(r => (r.name||'').toLowerCase().includes(q));
+  document.getElementById('rtpCount').textContent = data.length + ' vehicle(s)';
+  const tbody = document.getElementById('rtpBody');
+  if(!data.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="7"><div class="empty-icon">🚗</div>No round trip vehicles added yet</td></tr>`;
+    return;
+  }
+  const themeLabel = { ertiga:'Gold', sedan:'Blue', crysta:'Teal' };
+  tbody.innerHTML = data.map(r => `
+    <tr class="data-row">
+      <td><strong>${esc(r.name)}</strong></td>
+      <td>₹${esc(r.rate)}/km</td>
+      <td>${esc(r.persons)}</td>
+      <td>${esc(r.bags)}</td>
+      <td>${r.badge ? `<span class="tag tag-amber">${esc(r.badge)}</span>` : '—'}</td>
+      <td>${themeLabel[r.theme] || 'Gold'}</td>
+      <td>
+        <button class="del-btn" style="border-color:rgba(255,180,0,0.3);color:var(--amber);margin-right:6px;" onclick="openRtRateModal('${r.id}')"><i class="fas fa-pen"></i></button>
+        <button class="del-btn" onclick="deleteRtRate('${r.id}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+window.openRtRateModal = function(id){
+  const modal = document.getElementById('rtRateModal');
+  const title = document.getElementById('rtRateModalTitle');
+  window._editingRtRateId = id || null;
+  if(id){
+    const r = roundTripRatesCache.find(x => x.id === id);
+    title.textContent = 'Edit Vehicle';
+    document.getElementById('rtrName').value     = r ? r.name     : '';
+    document.getElementById('rtrRate').value     = r ? r.rate     : '';
+    document.getElementById('rtrPersons').value  = r ? r.persons  : '';
+    document.getElementById('rtrBags').value     = r ? r.bags     : '';
+    document.getElementById('rtrImage').value    = r ? r.image    : '';
+    document.getElementById('rtrBadge').value    = r ? r.badge    : '';
+    document.getElementById('rtrTheme').value    = r ? (r.theme||'ertiga') : 'ertiga';
+    document.getElementById('rtrFeatures').value = r ? r.features : '';
+  } else {
+    title.textContent = 'Add Vehicle';
+    document.getElementById('rtrName').value     = '';
+    document.getElementById('rtrRate').value     = '';
+    document.getElementById('rtrPersons').value  = '';
+    document.getElementById('rtrBags').value     = '';
+    document.getElementById('rtrImage').value    = '';
+    document.getElementById('rtrBadge').value    = '';
+    document.getElementById('rtrTheme').value    = 'ertiga';
+    document.getElementById('rtrFeatures').value = '';
+  }
+  modal.style.display = 'flex';
+};
+
+window.closeRtRateModal = function(){
+  document.getElementById('rtRateModal').style.display = 'none';
+};
+
+window.saveRtRate = async function(){
+  const name     = document.getElementById('rtrName').value.trim();
+  const rate     = document.getElementById('rtrRate').value.trim();
+  const persons  = document.getElementById('rtrPersons').value.trim();
+  const bags     = document.getElementById('rtrBags').value.trim();
+  const image    = document.getElementById('rtrImage').value.trim();
+  const badge    = document.getElementById('rtrBadge').value.trim();
+  const theme    = document.getElementById('rtrTheme').value;
+  const features = document.getElementById('rtrFeatures').value.trim();
+
+  if(!name || !rate || !persons || !bags){
+    showToast('Please fill in vehicle name, rate, persons and bags');
+    return;
+  }
+
+  try{
+    if(window._editingRtRateId){
+      await updateDocument('roundTripRates', window._editingRtRateId, { name, rate, persons, bags, image, badge, theme, features });
+      showToast('Vehicle updated');
+    } else {
+      await saveDocument('roundTripRates', { name, rate, persons, bags, image, badge, theme, features, order: Date.now() });
+      showToast('Vehicle added');
+    }
+    closeRtRateModal();
+    refreshAll(false);
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Could not save vehicle: ' + (e.message||'check Firestore rules'));
+  }
+};
+
+window.deleteRtRate = async function(id){
+  if(!confirm('Delete this vehicle from round trip pricing?')) return;
+  await deleteDocument('roundTripRates', id);
+  showToast('Vehicle deleted');
+  refreshAll(false);
+};
+
+// ─────────────────────────────────────────
+// BULK RATE ADJUST
+// ─────────────────────────────────────────
+window._bulkAdjustTarget = null;
+
+window.openBulkAdjustModal = function(target){
+  window._bulkAdjustTarget = target; // 'routes' or 'roundtrip'
+  const title = document.getElementById('bulkAdjustTitle');
+  const sub   = document.getElementById('bulkAdjustSub');
+  const fieldsWrap = document.getElementById('baFieldsWrap');
+
+  document.getElementById('baValue').value = '';
+  document.getElementById('baDirection').value = 'increase';
+  document.getElementById('baMethod').value = 'percent';
+  updateBaValueLabel();
+
+  if(target === 'routes'){
+    if(!routePricingCache.length){ showToast('No routes to adjust'); return; }
+    title.textContent = 'Bulk Adjust Route Prices';
+    sub.textContent = `This will update all ${routePricingCache.length} route(s) currently in the table.`;
+    fieldsWrap.style.display = 'block';
+  } else {
+    if(!roundTripRatesCache.length){ showToast('No vehicles to adjust'); return; }
+    title.textContent = 'Bulk Adjust Round Trip Rates';
+    sub.textContent = `This will update all ${roundTripRatesCache.length} vehicle(s) currently in the table.`;
+    fieldsWrap.style.display = 'none';
+  }
+  document.getElementById('bulkAdjustModal').style.display = 'flex';
+};
+
+window.closeBulkAdjustModal = function(){
+  document.getElementById('bulkAdjustModal').style.display = 'none';
+};
+
+window.updateBaValueLabel = function(){
+  const method = document.getElementById('baMethod').value;
+  document.getElementById('baValueLabel').textContent = method === 'percent' ? 'Value (%)' : 'Value (₹)';
+};
+
+function computeAdjusted(oldVal, direction, method, value){
+  const n = parseFloat(oldVal);
+  if(isNaN(n)) return oldVal;
+  let result;
+  if(method === 'percent'){
+    result = direction === 'increase' ? n * (1 + value/100) : n * (1 - value/100);
+  } else {
+    result = direction === 'increase' ? n + value : n - value;
+  }
+  return Math.max(0, Math.round(result));
+}
+
+window.applyBulkAdjust = async function(){
+  const direction = document.getElementById('baDirection').value;
+  const method    = document.getElementById('baMethod').value;
+  const value     = parseFloat(document.getElementById('baValue').value);
+
+  if(isNaN(value) || value <= 0){
+    showToast('Please enter a valid positive value');
+    return;
+  }
+
+  const target = window._bulkAdjustTarget;
+  const btn = document.querySelector('#bulkAdjustModal .login-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Applying…';
+
+  try{
+    if(target === 'routes'){
+      const applySedan = document.getElementById('baApplySedan').checked;
+      const applySuv   = document.getElementById('baApplySuv').checked;
+      if(!applySedan && !applySuv){
+        showToast('Select at least Sedan or SUV to adjust');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> &nbsp;Apply to All';
+        return;
+      }
+
+      // Snapshot original values BEFORE changing anything
+      const snapshot = routePricingCache.map(r => ({ id: r.id, sedan: r.sedan, suv: r.suv }));
+      saveSnapshot('routes', snapshot);
+
+      const jobs = routePricingCache.map(r => {
+        const updates = {};
+        if(applySedan) updates.sedan = String(computeAdjusted(r.sedan, direction, method, value));
+        if(applySuv)   updates.suv   = String(computeAdjusted(r.suv, direction, method, value));
+        return updateDocument('routes', r.id, updates);
+      });
+      await Promise.all(jobs);
+      showToast(`Updated ${routePricingCache.length} route(s)`);
+    } else {
+      // Snapshot original values BEFORE changing anything
+      const snapshot = roundTripRatesCache.map(r => ({ id: r.id, rate: r.rate }));
+      saveSnapshot('roundtrip', snapshot);
+
+      const jobs = roundTripRatesCache.map(r => {
+        const newRate = computeAdjusted(r.rate, direction, method, value);
+        return updateDocument('roundTripRates', r.id, { rate: String(newRate) });
+      });
+      await Promise.all(jobs);
+      showToast(`Updated ${roundTripRatesCache.length} vehicle(s)`);
+    }
+    closeBulkAdjustModal();
+    refreshAll(false);
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Could not apply bulk update: ' + (e.message||'check Firestore rules'));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check"></i> &nbsp;Apply to All';
+  }
+};
+
+// ─────────────────────────────────────────
+// SNAPSHOT / REVERT (undo last bulk adjustment)
+// ─────────────────────────────────────────
+function snapshotKey(target){
+  return `berryquecab_bulk_snapshot_${target}`;
+}
+
+function saveSnapshot(target, records){
+  localStorage.setItem(snapshotKey(target), JSON.stringify({
+    timestamp: Date.now(),
+    records
+  }));
+  updateRevertButtons();
+}
+
+function clearSnapshot(target){
+  localStorage.removeItem(snapshotKey(target));
+  updateRevertButtons();
+}
+
+function updateRevertButtons(){
+  const routesBtn = document.getElementById('revertBtnRoutes');
+  const roundBtn  = document.getElementById('revertBtnRoundtrip');
+  routesBtn.style.display = localStorage.getItem(snapshotKey('routes')) ? 'flex' : 'none';
+  roundBtn.style.display  = localStorage.getItem(snapshotKey('roundtrip')) ? 'flex' : 'none';
+}
+
+window.revertBulkAdjust = async function(target){
+  const raw = localStorage.getItem(snapshotKey(target));
+  if(!raw){ showToast('No previous adjustment to revert'); return; }
+
+  const snapshot = JSON.parse(raw);
+  const ageMins = Math.round((Date.now() - snapshot.timestamp) / 60000);
+  const label = target === 'routes' ? 'route prices' : 'round trip rates';
+
+  if(!confirm(`Revert ${label} back to what they were before your last bulk adjustment (made ${ageMins} min ago)? This restores the original values.`)) return;
+
+  try{
+    const jobs = snapshot.records.map(r => {
+      if(target === 'routes'){
+        return updateDocument('routes', r.id, { sedan: r.sedan, suv: r.suv });
+      } else {
+        return updateDocument('roundTripRates', r.id, { rate: r.rate });
+      }
+    });
+    await Promise.all(jobs);
+    clearSnapshot(target);
+    showToast(`Reverted ${snapshot.records.length} record(s) to original values`);
+    refreshAll(false);
+  }catch(e){
+    console.error(e);
+    showToast('⚠ Could not revert: ' + (e.message||'check Firestore rules'));
+  }
+};
+
+// ─────────────────────────────────────────
+// EXPORT CSV
+// ─────────────────────────────────────────
+window.exportCSV = function(type){
+  const rows = [];
+  if(type==='bookings'||type==='all'){
+    rows.push(['--- BOOKINGS ---']);
+    rows.push(['Name','Mobile','Pickup','Destination','Date','Time','Trip','Received']);
+    bookingsCache.forEach(b => rows.push([b.name,b.mobile,b.pickup,b.destination,b.date,b.time,b.trip,fmtDate(b.received)]));
+  }
+  if(type==='routes'||type==='all'){
+    rows.push([]); rows.push(['--- ROUTE INQUIRIES ---']);
+    rows.push(['Route','Mobile','Sedan Price','SUV Price','Received']);
+    routesCache.forEach(r => rows.push([r.route,r.mobile,'₹'+r.sedan,'₹'+r.suv,fmtDate(r.received)]));
+  }
+  if(type==='roundtrip'||type==='all'){
+    rows.push([]); rows.push(['--- ROUND TRIPS ---']);
+    rows.push(['Vehicle','Rate/KM','Mobile','Received']);
+    roundCache.forEach(r => rows.push([r.car,r.rate,r.mobile,fmtDate(r.received)]));
+  }
+  const csv = rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `berryquecab_dispatch_${type}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  showToast('CSV exported');
+};
+
+// ─────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────
+function esc(s){
+  if(s === undefined || s === null) return '—';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function tripTag(trip){
+  if(trip === 'One Way') return 'tag-blue';
+  if(trip === 'Round Trip') return 'tag-teal';
+  return 'tag-amber';
+}
+function fmtDate(ts){
+  if(!ts) return '—';
+  try{
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  }catch(e){ return '—'; }
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+window.showPage = function(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(el) el.classList.add('active');
+  const titles = {dashboard:'Dashboard',bookings:'Bookings',routes:'Route Inquiries',roundtrip:'Round Trip Requests',routepricing:'Routes & Pricing',roundtrippricing:'Round Trip Pricing',settings:'Settings'};
+  document.getElementById('pageTitle').textContent = titles[name]||name;
+  document.getElementById('sidebar').classList.remove('open');
+};
+
+window.toggleSidebar = function(){
+  document.getElementById('sidebar').classList.toggle('open');
+};
+
+document.getElementById('routeModal').addEventListener('click', function(e){
+  if(e.target === this) closeRouteModal();
+});
+
+document.getElementById('rtRateModal').addEventListener('click', function(e){
+  if(e.target === this) closeRtRateModal();
+});
+
+// live ticker clock-style refresh of "time ago" feel
+setInterval(()=>{ if(bookingsCache.length) updateTicker(); }, 30000);
+</script>
+
+</body>
+</html>

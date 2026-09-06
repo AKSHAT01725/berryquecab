@@ -401,9 +401,8 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 .rt-rate-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--mute); margin-bottom:6px; }
 .rt-rate { font-family:'Space Grotesk'; font-size:56px; font-weight:700; line-height:1; color: var(--gold); letter-spacing:-2px; position:relative; display:inline-flex; align-items:flex-start; gap:2px; transition: all 0.3s ease; }
 .rt-rate-sym { font-size:26px; font-weight:700; color:var(--gold-light); margin-top:6px; letter-spacing:0; }
-.rt-rate-num { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%); background-size:200% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shimmerRate 3s infinite; transition:all 0.3s ease; }
-.rt-card:hover .rt-rate-num { animation:shimmerRate 1.2s infinite; filter:drop-shadow(0 0 20px rgba(168,118,63,0.5)); }
-@keyframes shimmerRate { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+.rt-rate-num { display: inline-block; color: var(--gold); background: none; -webkit-text-fill-color: initial; -webkit-background-clip: initial; background-clip: initial; animation: none; transition: none; }
+.rt-card:hover .rt-rate-num { animation: none; filter: none; }
 .rt-rate-unit { font-family:'Space Grotesk'; font-size:13px; color:var(--mute); font-weight:600; align-self:flex-end; margin-bottom:8px; letter-spacing:.5px; }
 .rt-rate-num { display:inline-block; }
 .rt-divider { display:flex; align-items:center; gap:10px; margin:0 0 20px; color:var(--mute); font-size:11px; }
@@ -1563,7 +1562,6 @@ window.renderRoundTripGrid = function(rates) {
       <button class="rt-book-btn" onclick="bookRoundTrip('${nameEsc}','${r.rate}')"><i class="fab fa-whatsapp"></i> &nbsp;Book on WhatsApp</button>
     </div>`;
   }).join('');
-  initRoundTripCountUp();
 };
 </script>
 

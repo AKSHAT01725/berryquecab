@@ -333,7 +333,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 @media(max-width:640px){ .booking-grid { grid-template-columns:1fr; } .booking-wrap { padding:24px 18px; } }
 
 /* ── SERVICES ── */
-.services-grid { display:grid; grid-template-columns:repeat(5,minmax(220px,1fr)); gap:18px; }
+.services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
 .service-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px 24px; transition:var(--transition); }
 .service-card:hover { border-color:var(--gold); background:var(--gold-dim); transform:translateY(-4px); }
 .service-icon { width:46px; height:46px; border-radius:12px; background:var(--gold-dim); border:1px solid rgba(168,118,63,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:18px; }
@@ -421,8 +421,9 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 
 /* ── MOBILE ── */
 @media (max-width: 700px) {
+  
   .service-card.featured-service {
-    grid-column: 1 / -1;
+    grid-column: 1fr;
     padding: 24px 20px;
   }
 
@@ -1092,7 +1093,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 </div>
 
 <div class="service-card">
-  <div class="service-icon">🚘</div>
+  <div class="service-icon"></div>
   <h3>Complete Travel Solutions</h3>
   <p>All types of cars, tempo travelers & buses Available</p>
   <ul>

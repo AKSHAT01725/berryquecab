@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel — Berry Que Cab</title>
+<title>Dispatch Console — Berry Que Cab</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root{
-  --navy:       #0d0d0d;
-  --ink:        #161616;
-  --ink-2:      #1f1f1f;
-  --surface:    #1a1a1a;
-  --line:       rgba(255,255,255,0.08);
-  --line-2:     rgba(255,255,255,0.14);
-  --amber:      #c9974a;
-  --amber-dim:  rgba(201,151,74,0.16);
-  --teal:       #e6cfa0;
-  --teal-dim:   rgba(230,207,160,0.14);
+  --navy:       #f5f2ec;
+  --ink:        #faf8f4;
+  --ink-2:      #ffffff;
+  --surface:    #f7f4ef;
+  --line:       rgba(0,0,0,0.08);
+  --line-2:     rgba(0,0,0,0.14);
+  --amber:      #a8763f;
+  --amber-dim:  rgba(168,118,63,0.16);
+  --teal:       #8a6a3c;
+  --teal-dim:   rgba(138,106,60,0.14);
   --red:        #ff5c5c;
   --red-dim:    rgba(255,92,92,0.14);
-  --ice:        #f5f1ea;
-  --mute:       #a89a8a;
-  --mute-2:     #8a8378;
+  --ice:        #221c14;
+  --mute:       #6b6258;
+  --mute-2:     #4a453d;
   --radius:     14px;
 }
 
@@ -47,7 +47,7 @@ body{
   position:fixed; inset:0;
   background: var(--navy);
   background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.025) 40px),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.025) 40px),
     radial-gradient(circle at 50% 20%, rgba(255,180,0,0.08), transparent 55%);
   display:flex; align-items:center; justify-content:center;
   z-index:9999;
@@ -118,7 +118,7 @@ body{
 .field input{
   width:100%;
   padding:13px 15px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.04);
   border:1px solid var(--line);
   border-radius:9px;
   color:var(--ice);
@@ -190,7 +190,7 @@ body{
   display:flex; align-items:center; gap:8px;
   padding:11px 18px; border-radius:10px; font-size:13px; font-weight:700;
   cursor:pointer; transition:.2s; border:1px solid var(--line-2);
-  background:rgba(255,255,255,0.04); color:var(--ice); white-space:nowrap;
+  background:rgba(0,0,0,0.04); color:var(--ice); white-space:nowrap;
 }
 .briefing-btn:hover{ border-color:var(--amber); color:var(--amber); }
 .briefing-btn.primary{ background:var(--amber); color:#0d0d0d; border-color:var(--amber); }
@@ -254,7 +254,7 @@ body{
   font-weight:500;
   border-left:3px solid transparent;
 }
-.nav-item:hover{ color:var(--ice); background:rgba(255,255,255,0.03); }
+.nav-item:hover{ color:var(--ice); background:rgba(0,0,0,0.03); }
 .nav-item.active{
   color:var(--amber);
   border-left-color:var(--amber);
@@ -263,7 +263,7 @@ body{
 .nav-item i{ width:16px; text-align:center; font-size:13px; }
 .nav-count{
   margin-left:auto;
-  background:rgba(255,255,255,0.08);
+  background:rgba(0,0,0,0.08);
   color:var(--mute);
   font-size:11px;
   padding:1px 7px;
@@ -332,7 +332,7 @@ body{
 }
 .topbar-right{ display:flex; align-items:center; gap:12px; }
 .refresh-btn{
-  background:rgba(255,255,255,0.05);
+  background:rgba(0,0,0,0.05);
   border:1px solid var(--line);
   color:var(--mute);
   padding:9px 14px;
@@ -427,7 +427,7 @@ body{
 .table-wrap{ overflow-x:auto; }
 table{ width:100%; border-collapse:collapse; font-size:13px; }
 th{
-  background:rgba(255,255,255,0.02);
+  background:rgba(0,0,0,0.02);
   padding:11px 16px;
   text-align:left;
   color:var(--mute);
@@ -440,7 +440,7 @@ th{
 }
 td{ padding:13px 16px; border-top:1px solid var(--line); vertical-align:top; }
 tr.data-row{ transition:.15s; }
-tr.data-row:hover td{ background:rgba(255,255,255,0.018); }
+tr.data-row:hover td{ background:rgba(0,0,0,0.018); }
 .tag{
   display:inline-block; padding:3px 10px; border-radius:20px;
   font-size:10.5px; font-weight:700; letter-spacing:.3px;
@@ -905,7 +905,7 @@ tr.data-row:hover td{ background:rgba(255,255,255,0.018); }
     </div>
     <div class="field">
       <label>Accent Color</label>
-      <select id="rtrTheme" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+      <select id="rtrTheme" style="width:100%;padding:13px 15px;background:rgba(0,0,0,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
         <option value="ertiga">Gold (default)</option>
         <option value="sedan">Blue</option>
         <option value="crysta">Teal</option>
@@ -930,7 +930,7 @@ tr.data-row:hover td{ background:rgba(255,255,255,0.018); }
 
     <div class="field">
       <label>Direction</label>
-      <select id="baDirection" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+      <select id="baDirection" style="width:100%;padding:13px 15px;background:rgba(0,0,0,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
         <option value="increase">Increase</option>
         <option value="decrease">Decrease</option>
       </select>
@@ -938,7 +938,7 @@ tr.data-row:hover td{ background:rgba(255,255,255,0.018); }
 
     <div class="field">
       <label>Method</label>
-      <select id="baMethod" onchange="updateBaValueLabel()" style="width:100%;padding:13px 15px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
+      <select id="baMethod" onchange="updateBaValueLabel()" style="width:100%;padding:13px 15px;background:rgba(0,0,0,0.04);border:1px solid var(--line);border-radius:9px;color:var(--ice);font-size:14.5px;outline:none;">
         <option value="percent">Percentage (%)</option>
         <option value="fixed">Fixed Amount (₹)</option>
       </select>

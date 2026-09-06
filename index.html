@@ -393,39 +393,266 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 }
 /* ── END ROUND TRIP IMAGE ── */
 
-.rt-badge { position:absolute; top:12px; right:12px; background: linear-gradient(90deg, #a8763f, #c9974a); color:#0d0d0d; font-size:10px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; font-family:'Space Grotesk'; box-shadow:0 4px 12px rgba(168,118,63,0.4); z-index:1; }
-.rt-card h3 { font-family:'Space Grotesk'; font-size:20px; font-weight:700; color:var(--ice); margin-bottom:4px; }
-.rt-card .capacity { font-size:12.5px; color:var(--mute); display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:24px; }
-.rt-card .capacity i { font-size:11px; color:var(--teal); }
-.rt-rate-block { margin:0 -8px 24px; padding:20px 16px; background: rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.06); border-radius:16px; position:relative; }
-.rt-rate-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--mute); margin-bottom:6px; }
-.rt-rate { font-family:'Space Grotesk'; font-size:56px; font-weight:700; line-height:1; color: var(--gold); letter-spacing:-2px; position:relative; display:inline-flex; align-items:flex-start; gap:2px; transition: all 0.3s ease; }
-.rt-rate-sym { font-size:26px; font-weight:700; color:var(--gold-light); margin-top:6px; letter-spacing:0; }
-.rt-rate-num { display: inline-block; color: var(--gold); background: none; -webkit-text-fill-color: initial; -webkit-background-clip: initial; background-clip: initial; animation: none; transition: none; }
-.rt-card:hover .rt-rate-num { animation: none; filter: none; }
-.rt-rate-unit { font-family:'Space Grotesk'; font-size:13px; color:var(--mute); font-weight:600; align-self:flex-end; margin-bottom:8px; letter-spacing:.5px; }
-.rt-rate-num { display:inline-block; }
-.rt-divider { display:flex; align-items:center; gap:10px; margin:0 0 20px; color:var(--mute); font-size:11px; }
-.rt-divider::before, .rt-divider::after { content:''; flex:1; height:1px; background:var(--line); }
-.rt-features { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
-.rt-feature-pill { display:inline-flex; align-items:center; gap:5px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.07); border-radius:20px; padding:5px 12px; font-size:11.5px; color:rgba(31,26,19,0.65); }
-.rt-feature-pill i { color:var(--teal); font-size:10px; }
-.rt-book-btn { width:100%; padding:15px; background: linear-gradient(135deg, var(--gold), #d9a352); color:#0d0d0d; border:none; border-radius:50px; font-weight:800; font-size:15px; cursor:pointer; transition:var(--transition); font-family:'Space Grotesk'; letter-spacing:.3px; box-shadow: 0 8px 24px rgba(168,118,63,0.3); position:relative; overflow:hidden; }
-.rt-book-btn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.15), transparent); opacity:0; transition:opacity .25s; }
-.rt-book-btn:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 16px 40px rgba(168,118,63,0.45); }
-.rt-book-btn:hover::after { opacity:1; }
-.rt-book-btn:active { transform:translateY(0) scale(0.99); }
-.rt-card.sedan { --rt-glow:rgba(181,106,74,0.1); --rt-accent:linear-gradient(90deg,#a9825a,#c9a67c); }
-.rt-card.sedan .rt-rate-num { background:linear-gradient(135deg,#a9825a 0%,#d9c09a 50%,#a9825a 100%); background-size:200% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.rt-card.sedan .rt-book-btn { background:linear-gradient(135deg,#a9825a,#6b4a2e); color:white; box-shadow:0 8px 24px rgba(181,106,74,0.35); }
-.rt-card.sedan .rt-book-btn:hover { box-shadow:0 16px 40px rgba(181,106,74,0.5); }
-.rt-card.ertiga { --rt-glow:rgba(168,118,63,0.1); --rt-accent:linear-gradient(90deg,#a8763f,#c9974a); }
-.rt-card.crysta { --rt-glow:rgba(138,106,60,0.1); --rt-accent:linear-gradient(90deg,#8a6a3c,#c8a76c); }
-.rt-card.crysta .rt-rate-num { background:linear-gradient(135deg,#8a6a3c 0%,#f0e2c8 50%,#8a6a3c 100%); background-size:200% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.rt-card.crysta .rt-book-btn { background:linear-gradient(135deg,#8a6a3c,#c8a76c); color:#201a10; box-shadow:0 8px 24px rgba(138,106,60,0.3); }
-.rt-card.crysta .rt-book-btn:hover { box-shadow:0 16px 40px rgba(138,106,60,0.45); }
-@keyframes countUp { from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
-.rt-rate-num.animate { animation:countUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.rt-badge {
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:linear-gradient(90deg,#a8763f,#c9974a);
+  color:#0d0d0d;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  padding:4px 12px;
+  border-radius:20px;
+  font-family:'Space Grotesk';
+  box-shadow:0 4px 12px rgba(168,118,63,0.4);
+  z-index:1;
+}
+
+.rt-card h3 {
+  font-family:'Space Grotesk';
+  font-size:20px;
+  font-weight:700;
+  color:var(--ice);
+  margin-bottom:4px;
+}
+
+.rt-card .capacity {
+  font-size:12.5px;
+  color:var(--mute);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:24px;
+}
+
+.rt-card .capacity i {
+  font-size:11px;
+  color:var(--teal);
+}
+
+/* ROUND TRIP PRICE BOX */
+.rt-rate-block {
+  margin:0 -8px 24px;
+  padding:20px 16px;
+  background:rgba(0,0,0,0.03);
+  border:1px solid rgba(0,0,0,0.06);
+  border-radius:16px;
+  position:relative;
+}
+
+.rt-rate-label {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--mute);
+  margin-bottom:6px;
+}
+
+/* STATIC PRICE */
+.rt-rate {
+  font-family:'Space Grotesk';
+  font-size:56px;
+  font-weight:700;
+  line-height:1;
+  color:var(--gold);
+  letter-spacing:-2px;
+  position:relative;
+  display:inline-flex;
+  align-items:flex-start;
+  gap:2px;
+  transition:none !important;
+}
+
+.rt-rate-sym {
+  font-size:26px;
+  font-weight:700;
+  color:var(--gold);
+  margin-top:6px;
+  letter-spacing:0;
+}
+
+/* PRICE NUMBER - NO SHINE / NO GRADIENT / NO ANIMATION */
+.rt-rate-num {
+  display:inline-block !important;
+  color:var(--gold) !important;
+
+  background:none !important;
+  background-image:none !important;
+  background-size:auto !important;
+
+  -webkit-background-clip:initial !important;
+  background-clip:initial !important;
+
+  -webkit-text-fill-color:var(--gold) !important;
+
+  animation:none !important;
+  transition:none !important;
+  filter:none !important;
+
+  opacity:1 !important;
+  transform:none !important;
+}
+
+/* Disable price effects on hover */
+.rt-card:hover .rt-rate-num,
+.rt-card.sedan:hover .rt-rate-num,
+.rt-card.ertiga:hover .rt-rate-num,
+.rt-card.crysta:hover .rt-rate-num {
+  animation:none !important;
+  filter:none !important;
+  background:none !important;
+  background-image:none !important;
+  -webkit-text-fill-color:var(--gold) !important;
+  transform:none !important;
+}
+
+/* Vehicle-specific price overrides - STATIC */
+.rt-card.sedan .rt-rate-num,
+.rt-card.ertiga .rt-rate-num,
+.rt-card.crysta .rt-rate-num {
+  color:var(--gold) !important;
+  background:none !important;
+  background-image:none !important;
+  background-size:auto !important;
+  -webkit-background-clip:initial !important;
+  background-clip:initial !important;
+  -webkit-text-fill-color:var(--gold) !important;
+  animation:none !important;
+  filter:none !important;
+  transition:none !important;
+}
+
+.rt-rate-unit {
+  font-family:'Space Grotesk';
+  font-size:13px;
+  color:var(--mute);
+  font-weight:600;
+  align-self:flex-end;
+  margin-bottom:8px;
+  letter-spacing:.5px;
+}
+
+.rt-divider {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 20px;
+  color:var(--mute);
+  font-size:11px;
+}
+
+.rt-divider::before,
+.rt-divider::after {
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+
+.rt-features {
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.rt-feature-pill {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:rgba(0,0,0,0.04);
+  border:1px solid rgba(0,0,0,0.07);
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:11.5px;
+  color:rgba(31,26,19,0.65);
+}
+
+.rt-feature-pill i {
+  color:var(--teal);
+  font-size:10px;
+}
+
+.rt-book-btn {
+  width:100%;
+  padding:15px;
+  background:linear-gradient(135deg,var(--gold),#d9a352);
+  color:#0d0d0d;
+  border:none;
+  border-radius:50px;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  transition:var(--transition);
+  font-family:'Space Grotesk';
+  letter-spacing:.3px;
+  box-shadow:0 8px 24px rgba(168,118,63,0.3);
+  position:relative;
+  overflow:hidden;
+}
+
+.rt-book-btn::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+  opacity:0;
+  transition:opacity .25s;
+}
+
+.rt-book-btn:hover {
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 16px 40px rgba(168,118,63,0.45);
+}
+
+.rt-book-btn:hover::after {
+  opacity:1;
+}
+
+.rt-book-btn:active {
+  transform:translateY(0) scale(0.99);
+}
+
+/* VEHICLE THEMES */
+.rt-card.sedan {
+  --rt-glow:rgba(181,106,74,0.1);
+  --rt-accent:linear-gradient(90deg,#a9825a,#c9a67c);
+}
+
+.rt-card.sedan .rt-book-btn {
+  background:linear-gradient(135deg,#a9825a,#6b4a2e);
+  color:white;
+  box-shadow:0 8px 24px rgba(181,106,74,0.35);
+}
+
+.rt-card.sedan .rt-book-btn:hover {
+  box-shadow:0 16px 40px rgba(181,106,74,0.5);
+}
+
+.rt-card.ertiga {
+  --rt-glow:rgba(168,118,63,0.1);
+  --rt-accent:linear-gradient(90deg,#a8763f,#c9974a);
+}
+
+.rt-card.crysta {
+  --rt-glow:rgba(138,106,60,0.1);
+  --rt-accent:linear-gradient(90deg,#8a6a3c,#c8a76c);
+}
+
+.rt-card.crysta .rt-book-btn {
+  background:linear-gradient(135deg,#8a6a3c,#c8a76c);
+  color:#201a10;
+  box-shadow:0 8px 24px rgba(138,106,60,0.3);
+}
+
+.rt-card.crysta .rt-book-btn:hover {
+  box-shadow:0 16px 40px rgba(138,106,60,0.45);
+}
 
 
 

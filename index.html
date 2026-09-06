@@ -178,9 +178,6 @@ header.scrolled { background: rgba(255,255,255,0.95); border-bottom-color: var(-
   min-height:100vh; display:flex; align-items:center;
   padding:120px 6% 80px; position:relative; overflow:hidden;
   background:
-    linear-gradient(90deg, #f5f2ec 0%, #f5f2ec 42%, rgba(245,242,236,0.72) 58%, rgba(245,242,236,0.28) 78%, rgba(245,242,236,0) 100%),
-    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(168,118,63,0.07), transparent),
-    radial-gradient(ellipse 60% 80% at 10% 80%, rgba(61,220,151,0.05), transparent),
     url('hero.jpg') center right / cover no-repeat,
     linear-gradient(160deg, #f5f2ec 0%, #faf8f4 50%, #ffffff 100%);
 }
@@ -195,13 +192,6 @@ header.scrolled { background: rgba(255,255,255,0.95); border-bottom-color: var(-
     min-height: 720px;
 
     background:
-      linear-gradient(
-        to right,
-        rgba(245, 242, 236, 0.888),
-        rgba(245, 242, 236, 0.735),
-        rgba(245, 242, 236, 0.482),
-        rgba(245, 242, 236, 0.155)
-      ),
       url('hero.jpg') center bottom / cover no-repeat;
 
     display: flex;
@@ -219,8 +209,8 @@ header.scrolled { background: rgba(255,255,255,0.95); border-bottom-color: var(-
 .hero-eyebrow .dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 1.8s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.3;} }
 .hero h1 { font-family:'Space Grotesk'; font-size:clamp(38px,5.5vw,68px); font-weight:700; line-height:1.08; letter-spacing:-1px; margin-bottom:20px; color:var(--ice); }
-.hero h1 em { font-style:normal; color:var(--gold); }
-.hero-sub { font-size:clamp(15px,1.8vw,18px); color:var(--mute); line-height:1.65; margin-bottom:36px; max-width:520px; }
+.hero h1 em { font-style:normal; color:var(--gold-light); }
+.hero-sub { font-size:clamp(15px,1.8vw,18px); color:var(--navy); line-height:1.65; margin-bottom:36px; max-width:520px; }
 .hero-btns { display:flex; flex-wrap:wrap; gap:12px; }
 .btn-primary { display:inline-flex; align-items:center; gap:9px; background:var(--gold); color:#0d0d0d; font-weight:700; font-size:15px; padding:14px 28px; border-radius:50px; text-decoration:none; transition:var(--transition); box-shadow:0 8px 32px rgba(168,118,63,0.3); }
 .btn-primary:hover { background:#fff; transform:translateY(-2px); box-shadow:0 12px 40px rgba(168,118,63,0.45); }
@@ -1093,7 +1083,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 </div>
 
 <div class="service-card">
-  <div class="service-icon">🚘</div>
+  <div class="service-icon"></div>
   <h3>Complete Travel Solutions</h3>
   <p>All types of cars, tempo travelers & buses Available</p>
   <ul>

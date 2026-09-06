@@ -197,10 +197,10 @@ header.scrolled { background: rgba(255,255,255,0.95); border-bottom-color: var(-
     background:
       linear-gradient(
         to right,
-        rgba(245,242,236,0.96) 0%,
-        rgba(245,242,236,0.82) 30%,
-        rgba(245, 242, 236, 0.304) 90%,
-        rgba(245, 242, 236, 0.155) 100%
+        rgba(245, 242, 236, 0.888),
+        rgba(245, 242, 236, 0.735),
+        rgba(245, 242, 236, 0.482),
+        rgba(245, 242, 236, 0.155)
       ),
       url('hero.jpg') center bottom / cover no-repeat;
 
@@ -333,7 +333,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 @media(max-width:640px){ .booking-grid { grid-template-columns:1fr; } .booking-wrap { padding:24px 18px; } }
 
 /* ── SERVICES ── */
-.services-grid { display:grid; grid-template-columns:repeat(4,minmax(220px,1fr)); gap:18px; }
+.services-grid { display:grid; grid-template-columns:repeat(5,minmax(220px,1fr)); gap:18px; }
 .service-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px 24px; transition:var(--transition); }
 .service-card:hover { border-color:var(--gold); background:var(--gold-dim); transform:translateY(-4px); }
 .service-icon { width:46px; height:46px; border-radius:12px; background:var(--gold-dim); border:1px solid rgba(168,118,63,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:18px; }
@@ -798,7 +798,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 .footer-map { border-radius:10px; overflow:hidden; margin-top:12px; border:1px solid var(--line); }
 .footer-map iframe { display:block; }
 .footer-bottom { max-width:1100px; margin:0 auto; border-top:1px solid var(--line); padding-top:24px; text-align:center; font-size:12.5px; color:rgba(31,26,19,0.35); }
-.footer-keywords { font-size:12px; color:rgba(31,26,19,0.25); max-width:1100px; margin:12px auto 0; text-align:center; line-height:1.8; }
+.footer-keywords { font-size:12px; color:rgba(31, 26, 19, 0.68); max-width:1100px; margin:12px auto 0; text-align:center; line-height:1.8; }
 @media(max-width:768px){ .footer-grid { grid-template-columns:1fr; gap:32px; } }
 
 /* ── FLOATING BUTTONS ── */
@@ -914,7 +914,6 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
     </a>
     <div class="menu" id="mainMenu">
       <a href="#services">Services</a>
-      <a href="#cars">Fleet</a>
       <a href="#routes">Routes</a>
       <a href="#booking">Booking</a>
       <a href="#faq">FAQ</a>
@@ -1052,8 +1051,10 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
   <div class="service-icon">🚕</div>
   <h3>Local Cab Service</h3>
   <p>
-    Convenient cab rides for daily travel, meetings, shopping, appointments
-    and getting around the city with ease.
+    Convenient and reliable cab rides for daily travel, office commutes,
+    meetings, shopping, appointments and getting around the city with ease.
+    Enjoy comfortable vehicles, professional drivers and a smooth travel
+    experience for short and regular local journeys.
   </p>
 </div>
 
@@ -1061,8 +1062,10 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
   <div class="service-icon">🛣️</div>
   <h3>Outstation Cabs</h3>
   <p>
-    Comfortable and reliable rides for intercity travel, with flexible
-    one-way and round-trip options.
+    Comfortable and reliable rides for intercity and long-distance travel,
+    whether you are travelling for business, family trips, vacations or
+    personal occasions. Choose from flexible one-way and round-trip options
+    with convenient pickup and drop-off services.
   </p>
 </div>
 
@@ -1070,23 +1073,26 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
   <div class="service-icon">✈️</div>
   <h3>Airport Transfer</h3>
   <p>
-    Hassle-free airport pickup and drop services designed to get you there
-    comfortably and on time.
+    Hassle-free airport pickup and drop services designed to get you to the
+    airport comfortably and on time. Whether you are catching an early
+    morning flight or arriving late at night, enjoy dependable transportation
+    with convenient pickup and drop-off arrangements.
   </p>
 </div>
-
 
 <div class="service-card">
   <div class="service-icon">👨‍👩‍👧‍👦</div>
   <h3>Family & Group Travel</h3>
   <p>
     Spacious and comfortable vehicles for families, friends and groups
-    travelling together.
+    travelling together. From family outings and weekend trips to group
+    functions and special occasions, we provide suitable vehicles to make
+    travelling together comfortable, convenient and enjoyable.
   </p>
 </div>
 
 <div class="service-card">
-  <div class="service-icon">🚕</div>
+  <div class="service-icon"></div>
   <h3>Complete Travel Solutions</h3>
   <p>All types of cars, tempo travelers & buses Available</p>
   <ul>
@@ -1262,7 +1268,6 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
     <div class="footer-col">
       <h4>Quick Links</h4>
       <a href="#services">Our Services</a>
-      <a href="#cars">Our Fleet</a>
       <a href="#routes">Popular Routes</a>
       <a href="#roundtrip">Round Trip</a>
       <a href="#booking">Book Online</a>
@@ -1287,7 +1292,7 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
     </div>
   </div>
   <div class="footer-keywords">
-    Ahmedabad Taxi Service • Airport Cab Ahmedabad • Outstation Taxi Gujarat • One Way Cab Ahmedabad • Round Trip Taxi Gujarat • Corporate Cab Ahmedabad
+    Vadodara Taxi Service • Airport Cab Vadodara • Outstation Taxi Gujarat • One Way Cab Vadodara • Round Trip Taxi Gujarat • Corporate Cab Vadodara
   </div>
   <div class="footer-bottom">© 2026 Berry Que Cab. All Rights Reserved. Vadodara's Trusted Travel Partner — Available 24×7</div>
 </footer>

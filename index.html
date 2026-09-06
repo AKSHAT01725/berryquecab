@@ -530,24 +530,6 @@ select.loc-input option { background:#2e1f16; color:var(--ice); font-size:15px; 
 .rm-spinner { width:40px; height:40px; border:4px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
 .rm-loader p { color:var(--mute); font-size:14px; }
 
-/* ── TICKET SERVICES (Railway / Flight / Hotel) ── */
-#ticket-services { background:var(--navy-2); }
-.ticket-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
-.ticket-card { background:var(--navy-3); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; transition:var(--transition); display:flex; flex-direction:column; }
-.ticket-card:hover { border-color:rgba(193,127,78,0.3); transform:translateY(-6px); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
-.ticket-img-wrap { position:relative; overflow:hidden; }
-.ticket-img-wrap img { width:100%; height:190px; object-fit:cover; display:block; transition:transform 0.5s ease; }
-.ticket-card:hover .ticket-img-wrap img { transform:scale(1.06); }
-.ticket-badge { position:absolute; top:12px; left:12px; background:rgba(6,15,34,0.75); backdrop-filter:blur(6px); border:1px solid rgba(193,127,78,0.3); color:var(--gold); font-size:18px; width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
-.ticket-body { padding:24px 22px 26px; flex:1; display:flex; flex-direction:column; }
-.ticket-body h3 { font-family:'Space Grotesk'; font-size:17.5px; font-weight:700; margin-bottom:6px; color:var(--ice); }
-.ticket-desc { font-size:13px; color:var(--mute); line-height:1.6; margin-bottom:18px; }
-.ticket-list { list-style:none; display:flex; flex-direction:column; gap:11px; margin-bottom:20px; }
-.ticket-list li { display:flex; align-items:center; gap:11px; font-size:13.5px; color:rgba(238,242,248,0.85); font-weight:600; }
-.ticket-check { flex-shrink:0; width:23px; height:23px; border-radius:50%; background:var(--gold-dim); border:1px solid rgba(193,127,78,0.3); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:10.5px; }
-.ticket-btn { margin-top:auto; width:100%; padding:13px; background:rgba(37,211,102,0.12); border:1px solid rgba(37,211,102,0.3); color:#25d366; font-weight:700; font-size:13.5px; border-radius:10px; cursor:pointer; transition:var(--transition); font-family:'Plus Jakarta Sans',Arial,sans-serif; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; }
-.ticket-btn:hover { background:#25d366; color:#06341f; border-color:#25d366; }
-
 /* ── FAQ ── */
 #faq { background:var(--navy); }
 .faq-list { max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
@@ -645,6 +627,14 @@ select.loc-input option { background:#2e1f16; color:var(--ice); font-size:15px; 
     <i class="fas fa-right-left"></i>
   </button>
 </div>
+
+    <!-- Customer Name -->
+    <div class="date-time-grid">
+      <div class="dt-card" style="grid-column:1 / -1;">
+        <label class="loc-label">Your Name</label>
+        <input class="loc-input dt-input" type="text" id="bName" placeholder="Enter your full name" autocomplete="name" required>
+      </div>
+    </div>
 
     <!-- Pickup Date / Return Date -->
     <div class="date-time-grid" id="dateGrid">
@@ -914,14 +904,9 @@ select.loc-input option { background:#2e1f16; color:var(--ice); font-size:15px; 
     <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Booked an outstation cab for a family trip across Gujarat. Vehicle arrived exactly on time, clean and comfortable. The driver was polite and professional. Highly recommended!</p><div class="reviewer">— Harsh P.</div></div>
     <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Excellent experience from start to finish. Transparent pricing with no hidden charges. The driver was courteous and knowledgeable about the routes.</p><div class="reviewer">— Riya S.</div></div>
     <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Used Berry Que Cab for airport pickup and a sightseeing tour. Both experiences were outstanding. Driver arrived before scheduled time and the journey was very comfortable.</p><div class="reviewer">— Karan M.</div></div>
-    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">Our group trip was perfectly managed. Spacious, clean vehicle ideal for long-distance travel. Safe driving style and very helpful driver throughout the journey.</p><div class="reviewer">— Nehal T.</div></div>
-    <div class="review-card hidden-review"><div class="review-stars">★★★★★</div><p class="review-text">Hired an Innova for Ahmedabad to Mount Abu trip. Vehicle condition was excellent and the journey was very comfortable. Highly recommended.</p><div class="reviewer">— Mehul S.</div></div>
-    <div class="review-card hidden-review"><div class="review-stars">★★★★★</div><p class="review-text">Booked cabs for our wedding guests from Ahmedabad to Vadodara. Everything was managed perfectly and all vehicles arrived on time. Excellent coordination.</p><div class="reviewer">— Krunal T.</div></div>
-    <div class="review-card hidden-review"><div class="review-stars">★★★★★</div><p class="review-text">Amazing experience during our Saputara family vacation. Clean vehicle, safe driving and transparent pricing. Will definitely book again.</p><div class="reviewer">— Nidhi R.</div></div>
-    <div class="review-card hidden-review"><div class="review-stars">★★★★★</div><p class="review-text">Booked a round trip to Dwarka and Somnath. The driver was polite and knew all routes well. The trip was comfortable and completely hassle-free.</p><div class="reviewer">— Jay M.</div></div>
   </div>
   <div class="see-more-wrap" style="margin-bottom:24px">
-    <button class="see-more-btn" onclick="showMoreReviews()">Show More Reviews</button>
+    <a href="reviews.html" class="see-more-btn" style="display:inline-block;text-decoration:none;">Show More Reviews</a>
   </div>
   <div class="write-review-cta">
     <h3>Enjoyed Your Ride? 🌟</h3>
@@ -1223,6 +1208,7 @@ function to12Hour(time24) {
 document.getElementById('bookingForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn        = document.getElementById('bookBtn');
+  const name       = document.getElementById('bName').value.trim();
   const mobile     = document.getElementById('bMobile').value.trim();
   const pickup     = document.getElementById('bPickup').value.trim();
   const dest       = document.getElementById('bDestination').value.trim();
@@ -1232,6 +1218,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   const rentalHours = document.getElementById('bRentalHours').value;
   const trip       = selectedTrip;
 
+  if (!name) { showToast('Please enter your name', true); return; }
   if (!pickup) { showToast(trip === 'Airport' ? 'Please select an airport' : 'Please select a pickup city', true); return; }
   if (!dest) { showToast('Please select a destination city', true); return; }
   if (!mobile || mobile.length !== 10 || isNaN(mobile)) {
@@ -1251,7 +1238,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   if (window.saveBookingToFirebase) {
     try {
       await window.saveBookingToFirebase('bookings', {
-        mobile, pickup, destination: dest, date,
+        name, mobile, pickup, destination: dest, date,
         returnDate: trip === 'Round Trip' ? returnDate : '',
         rentalHours: trip === 'Rental' ? rentalHours : '',
         time, trip, received: new Date()
@@ -1263,7 +1250,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
 
   try {
     await emailjs.send('service_ydhh7oo', 'template_dfzfwxg', {
-      mobile, pickup, destination: dest,
+      name, mobile, pickup, destination: dest,
       date: toDMY(date),
       returnDate: trip === 'Round Trip' ? toDMY(returnDate) : '',
       time: to12Hour(time),
@@ -1279,6 +1266,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
 `━━━━━━━━━━━━━━━━━━━━━━━━━
 🚖 I WANT TO BOOK CAB
 ━━━━━━━━━━━━━━━━━━━━━━━━━
+▪️ Customer Name : ${name}
 ▪️ Contact Number : ${mobile}
 ▪️ Pickup Location : ${pickup}
 ▪️ Destination : ${dest}
@@ -1295,6 +1283,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   setTimeout(() => {
     window.open(waUrl, '_blank');
     document.getElementById('bookingForm').reset();
+    document.getElementById('bName').value = '';
     document.getElementById('bPickup').value = 'Ahmedabad';
     document.getElementById('bDestination').value = '';
     document.querySelectorAll('.trip-pill').forEach(p => p.classList.remove('active'));
@@ -1518,12 +1507,6 @@ window.toggleFaq = function(btn) {
     answer.style.maxHeight = answer.scrollHeight + 'px';
   }
 };
-
-// Show more reviews
-function showMoreReviews() {
-  document.querySelectorAll('.hidden-review').forEach(r => r.style.display = 'block');
-  document.querySelector('.see-more-btn').style.display = 'none';
-}
 
 // Round trip count-up animation on scroll
 function initRoundTripCountUp() {

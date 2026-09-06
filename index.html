@@ -333,12 +333,112 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 @media(max-width:640px){ .booking-grid { grid-template-columns:1fr; } .booking-wrap { padding:24px 18px; } }
 
 /* ── SERVICES ── */
-.services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
+.services-grid { display:grid; grid-template-columns:repeat(4,minmax(220px,1fr)); gap:18px; }
 .service-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px 24px; transition:var(--transition); }
 .service-card:hover { border-color:var(--gold); background:var(--gold-dim); transform:translateY(-4px); }
 .service-icon { width:46px; height:46px; border-radius:12px; background:var(--gold-dim); border:1px solid rgba(168,118,63,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:18px; }
 .service-card h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
 .service-card p { font-size:13.5px; color:var(--mute); line-height:1.6; }
+
+/* ── FEATURED SERVICE CARD ── */
+.service-card.featured-service {
+  grid-column: 1 / -1;
+  text-align: left;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-service .service-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.featured-service .service-icon {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.featured-service h3 {
+  margin: 0;
+}
+
+.featured-service > p {
+  margin-bottom: 24px;
+  max-width: 700px;
+}
+
+.vehicle-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.vehicle-list li {
+  background: rgba(168, 118, 63, 0.08);
+  border: 1px solid rgba(168, 118, 63, 0.18);
+  border-radius: 12px;
+  padding: 13px 16px;
+  color: var(--ice);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  transition: var(--transition);
+}
+
+.vehicle-list li::before {
+  content: "✓";
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.vehicle-list li:hover {
+  background: var(--gold-dim);
+  border-color: rgba(168, 118, 63, 0.35);
+  transform: translateY(-2px);
+}
+
+.service-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border-radius: 30px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(168, 118, 63, 0.25);
+  color: var(--gold) !important;
+  font-size: 12px !important;
+  font-weight: 700;
+  margin: 0 !important;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 700px) {
+  .service-card.featured-service {
+    grid-column: 1 / -1;
+    padding: 24px 20px;
+  }
+
+  .featured-service .service-top {
+    align-items: flex-start;
+  }
+
+  .vehicle-list {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .vehicle-list li {
+    padding: 12px 14px;
+  }
+}
 
 /* ── CARS ── */
 #cars { background:var(--navy-2); }
@@ -975,14 +1075,6 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
   </p>
 </div>
 
-<div class="service-card">
-  <div class="service-icon">🗺️</div>
-  <h3>Tour & Travel</h3>
-  <p>
-    Plan your Gujarat trip with comfortable cabs for sightseeing, family
-    tours, weekend getaways and long journeys.
-  </p>
-</div>
 
 <div class="service-card">
   <div class="service-icon">👨‍👩‍👧‍👦</div>
@@ -994,12 +1086,18 @@ select.loc-input option { background:#ffffff; color:var(--ice); font-size:15px; 
 </div>
 
 <div class="service-card">
-  <div class="service-icon">💍</div>
-  <h3>Wedding & Events</h3>
-  <p>
-    Dependable cab arrangements for weddings, functions, events and other
-    special occasions.
-  </p>
+  <div class="service-icon">🚕</div>
+  <h3>Complete Travel Solutions</h3>
+  <p>All types of cars, tempo travelers & buses Available</p>
+  <ul>
+    <li>Swift Dzire</li>
+    <li>Innova Crysta</li>
+    <li>Mini Bus</li>
+    <li>Maruti Suzuki Ertiga</li>
+    <li>Force Urbania</li>
+    <li>Buses up to 52 seaters</li><br>
+  </ul>
+  <b><p>📍 Service Available : All over India</p></b>
 </div>
 
   </div>

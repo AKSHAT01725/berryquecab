@@ -1638,6 +1638,22 @@ window.bookRoute = async function(route, sedan, suv) {
     catch(err) { console.error('Firebase error:', err); }
   }
 
+  try {
+    await emailjs.send('service_ydhh7oo', 'template_dfzfwxg', {
+      name: '',
+      mobile,
+      pickup: route,
+      destination: `Sedan ₹${sedan} / SUV ₹${suv}`,
+      date: toDMY(new Date().toISOString().split('T')[0]),
+      returnDate: '',
+      time: to12Hour(new Date().toTimeString().slice(0,5)),
+      trip: 'Route & Pricing Enquiry',
+      rentalHours: ''
+    });
+  } catch(err) {
+    console.error('EmailJS error:', err);
+  }
+
   const waMsg =
 `🚖 I WANT TO BOOK CAB
 ━━━━━━━━━━━━━━━━━━━━
@@ -1685,6 +1701,22 @@ window.submitRtWA = async function() {
     try {
       await window.saveBookingToFirebase('roundTripRequests', { car, rate, mobile, received: new Date() });
     } catch(err) { console.error('Firebase error:', err); }
+  }
+
+  try {
+    await emailjs.send('service_ydhh7oo', 'template_dfzfwxg', {
+      name: '',
+      mobile,
+      pickup: car,
+      destination: `Rate ₹${rate}/km`,
+      date: toDMY(new Date().toISOString().split('T')[0]),
+      returnDate: '',
+      time: to12Hour(new Date().toTimeString().slice(0,5)),
+      trip: 'Round Trip Rate Request',
+      rentalHours: ''
+    });
+  } catch(err) {
+    console.error('EmailJS error:', err);
   }
 
   const waMsg =
